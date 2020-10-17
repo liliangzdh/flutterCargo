@@ -4,7 +4,7 @@ import 'pages/login/Login.dart';
 import 'pages/main/index.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(home: MyApp(),));
 }
 
 class MyApp extends StatelessWidget {

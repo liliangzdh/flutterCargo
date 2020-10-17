@@ -29,6 +29,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   dio: ^3.0.10
+  fluro: ^1.7.3
 
 
 dev_dependencies:
@@ -56,6 +57,7 @@ flutter:
     - assets/images/waybill_normal.png
     - assets/images/home_normal.png
     - assets/images/home_select.png
+    - assets/images/my_top_bg.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
