@@ -1,5 +1,6 @@
-import 'package:cargo_flutter_app/pages/login/Login.dart';
+import 'package:cargo_flutter_app/nav/application.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -218,10 +219,13 @@ class _MyCenter extends State<MyCenter> {
           RaisedButton(
             child: Text('点击'),
             onPressed: () {
-              print('---->');
-              Navigator.of(context).push(new MaterialPageRoute(builder: (context){
-                return new Login();
-              }));
+              Application.router.navigateTo(
+                context,
+                '/login',
+                transitionDuration: Duration(seconds: 1),
+                transition: TransitionType.inFromRight,
+              );
+              print('34---->');
             },
           ),
         ],

@@ -1,15 +1,11 @@
-import 'dart:io';
-
+/*
+ * 网络请求接口 单列 模式。
+ */
 import 'package:cargo_flutter_app/model/app_response.dart';
-import 'package:dio/adapter.dart';
 import "package:dio/dio.dart";
-import 'package:flutter/cupertino.dart';
 import '../../config/config.dart';
 
-/// 网络请求接口 单列 模式。
-///
-///
-///
+
 class ApiManger {
   factory ApiManger() => _getInstance();
 
