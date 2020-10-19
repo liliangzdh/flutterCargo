@@ -1,3 +1,5 @@
+import '../../components/loading.dart';
+import '../../pages/login/LoginViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
@@ -14,8 +16,16 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
+  LoginViewModel viewModel = LoginViewModel();
+
+  @override
+  void dispose() {
+    super.dispose();
+    viewModel.dispose();
+  }
+
   // 构建 单个 的输入框。
-  Widget buildInputCell(String tip, String hintText) {
+  Widget buildInputCell(String tip, String hintText,TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,6 +35,7 @@ class _Login extends State<Login> {
         ),
         TextField(
           maxLines: 1,
+          controller: controller,
           style: TextStyle(
             color: ColorConfig.color33,
             fontWeight: FontWeight.w700,
@@ -47,9 +58,12 @@ class _Login extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    // 键盘是否展示。
+    bool isKeyboardShow = MediaQuery.of(context).viewInsets.vertical > 0;
     return Scaffold(
         appBar: AppBar(
           title: Text('登录'),
+          centerTitle: true,
           elevation: 0,
         ),
         body: Container(
@@ -73,11 +87,11 @@ class _Login extends State<Login> {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 80),
-                        child: buildInputCell('手机号', '请输入手机号码'),
+                        child: buildInputCell('手机号', '请输入手机号码',viewModel.usernameController),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 20),
-                        child: buildInputCell('密码', '请输入登录密码'),
+                        child: buildInputCell('密码', '请输入登录密码',viewModel.passwordController),
                       ),
                       Container(
                         width: double.infinity,
@@ -101,7 +115,7 @@ class _Login extends State<Login> {
                           highlightElevation: 0,
                           disabledElevation: 0,
                           onPressed: () {
-                            // viewModel.login(context);
+                            viewModel.login(context);
                           },
                           child: Text('登录',
                               style: TextStyle(
@@ -138,51 +152,66 @@ class _Login extends State<Login> {
                 ),
               ),
               Positioned(
-                child: Container(
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(children: [
-                      TextSpan(
-                          text: '首次登录自动注册约货账号，且已阅读并同意\n',
-                          style: TextStyle(
-                            color: ColorConfig.color_999,
-                            fontSize: 10,
-                            height: 4,
-                          )),
-                      TextSpan(
-                        text: '《用户服务协议》',
-                        style: TextStyle(
-                          color: ColorConfig.baseColor,
-                          fontSize: 10,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            print('用户服务协议');
-                          },
-                      ),
-                      TextSpan(
-                        text: '和',
-                        style: TextStyle(
-                            color: ColorConfig.color_999, fontSize: 10),
-                      ),
-                      TextSpan(
-                        text: '《隐私政策协议》',
-                        style: TextStyle(
-                          color: ColorConfig.baseColor,
-                          fontSize: 10,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            print('12隐私政策协议');
-                          },
-                      ),
-                    ]),
-                  ),
-                ),
                 bottom: 30,
                 left: 0,
                 right: 0,
-              )
+                child: Offstage(
+                  offstage: isKeyboardShow,
+                  child:  Container(
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(children: [
+                        TextSpan(
+                            text: '首次登录自动注册约货账号，且已阅读并同意\n',
+                            style: TextStyle(
+                              color: ColorConfig.color_999,
+                              fontSize: 10,
+                              height: 4,
+                            )),
+                        TextSpan(
+                          text: '《用户服务协议》',
+                          style: TextStyle(
+                            color: ColorConfig.baseColor,
+                            fontSize: 10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('用户服务协议');
+                            },
+                        ),
+                        TextSpan(
+                          text: '和',
+                          style: TextStyle(
+                              color: ColorConfig.color_999, fontSize: 10),
+                        ),
+                        TextSpan(
+                          text: '《隐私政策协议》',
+                          style: TextStyle(
+                            color: ColorConfig.baseColor,
+                            fontSize: 10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('12隐私政策协议');
+                            },
+                        ),
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+              StreamBuilder<bool>(
+                stream: viewModel.outputLoadingStateStream,
+                initialData: viewModel.loadingState,
+                builder: (context, snapshot) {
+                  var data = snapshot.data;
+                  print('$data');
+                  return Loading(
+                    data,
+                    text: '登录中...',
+                  );
+                },
+              ),
             ],
           ),
         ));
