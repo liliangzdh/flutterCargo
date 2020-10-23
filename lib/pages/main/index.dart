@@ -3,6 +3,7 @@ import 'package:cargo_flutter_app/pages/main/my/my_center.dart';
 import 'package:cargo_flutter_app/pages/main/send/send_goods.dart';
 import 'package:cargo_flutter_app/pages/main/waybill/way_bill.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/net_init.dart';
 import 'package:flutter/material.dart';
 
 // 首页四个按钮。
@@ -31,7 +32,7 @@ class _IndexState extends State<Index> {
     childList.add(new WayBill());
     childList.add(new MyCenter());
     //初始化登录操作
-    // netInit.initAppState();
+    netInit.initAppState();
   }
 
   bottomNavigationBarItem(

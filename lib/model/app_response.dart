@@ -8,8 +8,8 @@ class AppResponse {
 
   AppResponse.fromJson(Map<String, dynamic> json)
       : this.code = json['code'],
-        this.data = json['data'],
-        this.msg = json['msg'];
+        this.msg = json['msg'],
+        this.data = json['data'];
 
   @override
   String toString() {

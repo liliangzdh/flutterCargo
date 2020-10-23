@@ -1,4 +1,6 @@
 import 'package:cargo_flutter_app/nav/application.dart';
+import 'package:cargo_flutter_app/provider/single_global_instance/appstate.dart';
+import 'package:cargo_flutter_app/provider/single_global_instance/appstate_bloc.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +42,9 @@ class _MyCenter extends State<MyCenter> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('----------------------------->46');
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -228,6 +233,13 @@ class _MyCenter extends State<MyCenter> {
               print('34---->');
             },
           ),
+          StreamBuilder(
+            stream: appStateBloc.stream,
+            initialData: appStateBloc.value,
+            builder: (BuildContext context, AsyncSnapshot<AppState> snapshot) {
+              return Text('${snapshot.data.isLogin?"登录了":"未登录"}');
+            },
+          )
         ],
       ),
     );

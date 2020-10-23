@@ -2,9 +2,11 @@
  * 网络请求接口 单列 模式。
  */
 import 'package:cargo_flutter_app/model/app_response.dart';
+import 'package:cargo_flutter_app/utils/share_perference_utils.dart';
+import 'package:dio/adapter.dart';
 import "package:dio/dio.dart";
 import '../../config/config.dart';
-
+import 'dart:convert' as JSON;
 
 class ApiManger {
   factory ApiManger() => _getInstance();
@@ -24,14 +26,14 @@ class ApiManger {
     );
 
     // 设置能被花瓶 抓包。
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (client) {
-    //   // ignore: non_constant_identifier_names
-    //   client.findProxy = (Uri) {
-    //     // 用1个开关设置是否开启代理
-    //     return UrlConfig.isDebug ? 'PROXY 192.168.0.15:8888' : 'DIRECT';
-    //   };
-    // };
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      // ignore: non_constant_identifier_names
+      client.findProxy = (Uri) {
+        // 用1个开关设置是否开启代理
+        return UrlConfig.isDebug ? 'PROXY 192.168.0.8:8888' : 'DIRECT';
+      };
+    };
 
     dio.options = baseOptions;
   }
@@ -48,7 +50,12 @@ class ApiManger {
       String url, String method, Map<String, dynamic> params) async {
     Response response;
     bool isFormData = params['form'];
-    print(url);
+
+    var token = await SharePreferenceUtils.getToken();
+    if (token != null && token.length > 0) {
+      dio.options.headers.addAll({"token": token});
+    }
+
     try {
       if (method.toLowerCase() == 'post') {
         if (isFormData != null && isFormData == false) {
@@ -64,7 +71,13 @@ class ApiManger {
       }
       AppResponse appResponse;
       if (response.statusCode == 200) {
-        appResponse = new AppResponse.fromJson(response.data);
+        if (response.data is String) {
+          appResponse =
+              new AppResponse.fromJson(JSON.jsonDecode(response.data));
+        } else {
+          appResponse = new AppResponse.fromJson(response.data);
+        }
+        // print(JSON.jsonEncode(appResponse.data));
       } else {
         appResponse = new AppResponse(response.statusCode, '获取数据异常', null);
       }

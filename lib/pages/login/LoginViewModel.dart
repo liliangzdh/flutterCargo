@@ -1,9 +1,13 @@
+import 'package:cargo_flutter_app/model/user_info_entity.dart';
 import 'package:flutter/cupertino.dart';
 import '../../api/login_api.dart';
 import '../../utils/share_perference_utils.dart';
 import '../../model/app_response.dart';
 import '../../mvvm/base_view_model.dart';
 import '../../utils/toast_utils.dart';
+import 'package:fluro/fluro.dart';
+import '../../provider/single_global_instance/appstate_bloc.dart';
+import 'package:cargo_flutter_app/nav/application.dart';
 
 class LoginViewModel extends BaseViewModel<bool> {
   @override
@@ -34,12 +38,16 @@ class LoginViewModel extends BaseViewModel<bool> {
     // "15001197799" "123456"
     AppResponse response = await LoginApi.accountLogin(username, password);
     setLoading(false);
-    print('response:${response.data}');
     if (!response.isOk()) {
       ToastUtils.show(msg: response.msg);
       return;
     }
     print('-------token:${response.data['token']}');
+    var info = UserInfoEntity().fromJson(response.data['userInfo']);
+
+    appStateBloc.setUerInfo(info);
     await SharePreferenceUtils.saveToken(response.data['token']);
+
+    Application.router.pop(context);
   }
 }

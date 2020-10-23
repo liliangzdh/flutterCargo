@@ -7,7 +7,7 @@ class LoginApi {
 
   // 账户密码登录。
   static Future<AppResponse> accountLogin(String mobile, password) {
-    //  loginType 1 为司机端。2为 货主端。
+    //  loginType 1 为货主端。2为 司机端。
     Map<String, dynamic> param = {
       "phone": mobile,
       "password": CommonUtils.md5Encryption(password),
