@@ -5,6 +5,8 @@ import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:math' as math;
+import '../../../components/tran.dart';
 
 class MyCenter extends StatefulWidget {
   @override
@@ -13,7 +15,7 @@ class MyCenter extends StatefulWidget {
   }
 }
 
-class _MyCenter extends State<MyCenter> {
+class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
   // 头部
   Widget buildHeader() {
     return Container(
@@ -42,9 +44,6 @@ class _MyCenter extends State<MyCenter> {
 
   @override
   Widget build(BuildContext context) {
-
-    print('----------------------------->46');
-
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -75,69 +74,70 @@ class _MyCenter extends State<MyCenter> {
                         buildHeader(),
                         Expanded(
                             child: Container(
-                          // color: ColorConfig.color_999,
-                          alignment: Alignment.center,
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                child: Image.network(
-                                  'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1278861826,467317210&fm=26&gp=0.jpg',
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
+                              // color: ColorConfig.color_999,
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  ClipOval(
+                                    child: Image.network(
+                                      'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1278861826,467317210&fm=26&gp=0.jpg',
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center,
                                       children: [
-                                        Text(
-                                          '用户名',
-                                          style: TextStyle(
-                                            color: ColorConfig.colorfff,
-                                            fontSize: 14,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '用户名',
+                                              style: TextStyle(
+                                                color: ColorConfig.colorfff,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                '企业',
+                                                style: TextStyle(
+                                                  color: ColorConfig.baseColor,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              margin: EdgeInsets.only(left: 10),
+                                              padding: EdgeInsets.only(
+                                                left: 10,
+                                                right: 10,
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Color(0xFFC8E5FF),
+                                                borderRadius:
+                                                BorderRadius.circular(4), // 圆角度
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
+                                        Padding(
+                                          padding: EdgeInsets.only(top: 4),
                                           child: Text(
-                                            '企业',
+                                            '交易17 | 发货29',
                                             style: TextStyle(
-                                              color: ColorConfig.baseColor,
+                                              color: ColorConfig.colorfff,
                                               fontSize: 14,
                                             ),
                                           ),
-                                          margin: EdgeInsets.only(left: 10),
-                                          padding: EdgeInsets.only(
-                                            left: 10,
-                                            right: 10,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: Color(0xFFC8E5FF),
-                                            borderRadius:
-                                                BorderRadius.circular(4), // 圆角度
-                                          ),
-                                        ),
+                                        )
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        '交易17 | 发货29',
-                                        style: TextStyle(
-                                          color: ColorConfig.colorfff,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
+                                  )
+                                ],
+                              ),
+                            )),
                         Container(
                           height: 72,
                           width: double.infinity,
@@ -215,14 +215,14 @@ class _MyCenter extends State<MyCenter> {
             width: double.infinity,
             margin: EdgeInsets.only(left: 15, right: 15, top: 15),
             padding: EdgeInsets.all(15),
-            child: Text('你好'),
+            child: Text('den'),
             decoration: BoxDecoration(
               color: ColorConfig.colorfff,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
           RaisedButton(
-            child: Text('点击'),
+            child: Text('点击登录'),
             onPressed: () {
               Application.router.navigateTo(
                 context,
@@ -237,7 +237,7 @@ class _MyCenter extends State<MyCenter> {
             stream: appStateBloc.stream,
             initialData: appStateBloc.value,
             builder: (BuildContext context, AsyncSnapshot<AppState> snapshot) {
-              return Text('${snapshot.data.isLogin?"登录了":"未登录"}');
+              return Text('${snapshot.data.isLogin ? "登录了" : "未登录"}');
             },
           )
         ],

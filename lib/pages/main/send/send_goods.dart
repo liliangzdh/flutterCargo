@@ -9,8 +9,11 @@ class SendGoods extends StatefulWidget {
 }
 
 class _SendGoods extends State<SendGoods> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Container(child: Text('发货'),));
   }
+
+
 }

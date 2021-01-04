@@ -11,13 +11,15 @@ import 'package:cargo_flutter_app/nav/application.dart';
 
 class LoginViewModel extends BaseViewModel<bool> {
   @override
-  bool iniLoadingState() {
+  bool initLoadingState() {
     return false;
   }
 
   final passwordController = TextEditingController();
 
   final usernameController = TextEditingController();
+
+  final codeController = TextEditingController();
 
   ///登录
   login(BuildContext context) async {

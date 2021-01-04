@@ -20,7 +20,7 @@ abstract class BaseViewModel<T> {
   Stream get outputLoadingStateStream => loadingStateController.stream;
 
   BaseViewModel() {
-    loadingState = iniLoadingState();
+    loadingState = initLoadingState();
   }
 
   setLoading(bool state) {
@@ -28,7 +28,7 @@ abstract class BaseViewModel<T> {
     loadingStateSink.add(loadingState);
   }
 
-  bool iniLoadingState() {
+  bool initLoadingState() {
     return true;
   }
 
