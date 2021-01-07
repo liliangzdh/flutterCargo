@@ -1,12 +1,15 @@
-import 'package:cargo_flutter_app/nav/application.dart';
+import 'package:cargo_flutter_app/components/my_clipper.dart';
+import 'package:cargo_flutter_app/config/config.dart';
+import 'package:cargo_flutter_app/model/user_info_entity.dart';
 import 'package:cargo_flutter_app/provider/single_global_instance/appstate.dart';
 import 'package:cargo_flutter_app/provider/single_global_instance/appstate_bloc.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
-import 'package:fluro/fluro.dart';
+import 'package:cargo_flutter_app/utils/common_utils.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../../config/config.dart';
 
+/// 我的页面
 class MyCenter extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -15,6 +18,38 @@ class MyCenter extends StatefulWidget {
 }
 
 class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
+  var listData = [
+    {'icon': 'assets/images/my/car_manger.png', 'name': '车辆管理', "url": ""},
+    {'icon': 'assets/images/my/bill.png', 'name': '账单', "url": ""},
+    {
+      'icon': 'assets/images/my/data_statistics.png',
+      'name': '数据统计',
+      "url": ""
+    },
+    {
+      'icon': 'assets/images/my/invoices_manger.png',
+      'name': '发票管理',
+      "url": ""
+    },
+    {
+      'icon': 'assets/images/my/question_consultation.png',
+      'name': '问题咨询',
+      "url": ""
+    },
+    {
+      'icon': 'assets/images/my/evaluate_manger.png',
+      'name': '评价管理',
+      "url": ""
+    },
+    {
+      'icon': 'assets/images/my/insure_icon.png',
+      'name': '投保管理',
+      "url": ""
+    },
+    {'icon': 'assets/images/my/share_icon.png', 'name': '分享'},
+    {'icon': 'assets/images/my/share_icon.png', 'name': '登录', "url": "login"},
+  ];
+
   // 头部
   Widget buildHeader() {
     return Container(
@@ -41,6 +76,18 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
     );
   }
 
+  String getName(UserInfoEntity userInfo) {
+    if (userInfo == null) {
+      return "";
+    }
+    if (userInfo.state == 0 || userInfo.state == 5 || userInfo.state == 6) {
+      return '未实名';
+    }
+    return userInfo.name;
+  }
+
+  double topHeight = 260;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +99,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
         children: [
           Container(
             width: double.infinity,
-            height: 220,
+            height: topHeight,
             // color: ColorConfig.color_999,
             child: Stack(
               children: [
@@ -60,7 +107,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                   "assets/images/my_top_bg.png",
                   width: double.infinity,
                   fit: BoxFit.fill,
-                  height: 220,
+                  height: topHeight,
                 ),
                 Container(
                     width: double.infinity,
@@ -73,6 +120,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                       initialData: appStateBloc.value,
                       builder: (BuildContext context,
                           AsyncSnapshot<AppState> snapshot) {
+                        var userInfo = snapshot.data.userInfo;
                         return Column(
                           children: [
                             buildHeader(),
@@ -82,12 +130,22 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                 child: Row(
                                   children: [
                                     ClipOval(
-                                      child: Image.network(
-                                        snapshot.data.userInfo == null?'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1278861826,467317210&fm=26&gp=0.jpg':'${UrlConfig.ImageBaseUlr}${snapshot.data.userInfo.headUrl}',
-                                        width: 50,
-                                        height: 50,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      clipper: MyClipper(2),
+                                      child: userInfo == null ||
+                                              userInfo.headUrl == null ||
+                                              userInfo.headUrl.isEmpty
+                                          ? Image.asset(
+                                              "assets/images/logo.png",
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Image.network(
+                                              "${UrlConfig.ImageBaseUlr}${userInfo.headUrl}",
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(left: 10),
@@ -98,7 +156,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                           Row(
                                             children: [
                                               Text(
-                                                '${snapshot.data.userInfo?.startCardValidity != null ?'${snapshot.data.userInfo.name}':''}',
+                                                getName(userInfo),
                                                 style: TextStyle(
                                                   color: ColorConfig.colorfff,
                                                   fontSize: 14,
@@ -131,7 +189,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                           Padding(
                                             padding: EdgeInsets.only(top: 4),
                                             child: Text(
-                                              '交易17 | 发货29',
+                                              '交易${userInfo?.orderVo?.orderNum ?? '0'} | 发货${userInfo?.orderVo?.sendNum ?? '0'}',
                                               style: TextStyle(
                                                 color: ColorConfig.colorfff,
                                                 fontSize: 14,
@@ -146,7 +204,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                               ),
                             ),
                             Container(
-                              height: 72,
+                              height: 82,
                               width: double.infinity,
                               child: Row(
                                 children: [
@@ -161,15 +219,19 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                             style: TextStyle(
                                                 color: ColorConfig.baseColor),
                                           ),
-                                          Text(
-                                            '余额（元）',
-                                            style: TextStyle(
-                                                color: ColorConfig.color_999),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 8),
+                                            child: Text(
+                                              '余额（元）',
+                                              style: TextStyle(
+                                                  color: ColorConfig.color_999),
+                                            ),
                                           ),
                                         ],
                                       ),
                                       padding: EdgeInsets.only(
                                         bottom: 20,
+                                        top: 10,
                                       ),
                                     ),
                                   ),
@@ -184,20 +246,25 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            '0元',
-                                            style: TextStyle(
-                                                color: ColorConfig.baseColor),
+                                          Image.asset(
+                                            "assets/images/wallet.png",
+                                            fit: BoxFit.fill,
+                                            width: 20,
+                                            height: 20,
                                           ),
-                                          Text(
-                                            '我的钱包',
-                                            style: TextStyle(
-                                                color: ColorConfig.color_999),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 8),
+                                            child: Text(
+                                              '我的钱包',
+                                              style: TextStyle(
+                                                  color: ColorConfig.color_999),
+                                            ),
                                           ),
                                         ],
                                       ),
                                       padding: EdgeInsets.only(
                                         bottom: 20,
+                                        top: 10,
                                       ),
                                     ),
                                   ),
@@ -224,35 +291,91 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
           ),
           Container(
             width: double.infinity,
+            height: getListHeight(),
             margin: EdgeInsets.only(left: 15, right: 15, top: 15),
-            padding: EdgeInsets.all(15),
-            child: Text('den'),
+            padding: EdgeInsets.all(10),
+            child: buildList(),
             decoration: BoxDecoration(
               color: ColorConfig.colorfff,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
-          RaisedButton(
-            child: Text('点击登录'),
-            onPressed: () {
-              Application.router.navigateTo(
-                context,
-                '/login',
-                transitionDuration: Duration(seconds: 1),
-                transition: TransitionType.inFromRight,
-              );
-              print('34---->');
-            },
-          ),
-          StreamBuilder(
-            stream: appStateBloc.stream,
-            initialData: appStateBloc.value,
-            builder: (BuildContext context, AsyncSnapshot<AppState> snapshot) {
-              return Text('${snapshot.data.isLogin ? "登录了" : "未登录"}');
-            },
-          )
         ],
       ),
+    );
+  }
+
+  List<Widget> getWidgetList() {
+    return listData.map((item) => getItemContainer(item)).toList();
+  }
+
+  Widget getItemContainer(item) {
+    return Container(
+      child: RaisedButton(
+        elevation: 0,
+        padding:EdgeInsets.zero,
+        color: ColorConfig.colorfff,
+        splashColor: ColorConfig.colorEf,
+        highlightColor: ColorConfig.colorEf,
+        highlightElevation: 0,
+        onPressed: () {
+          String  path = item['url'];
+          if(path != null && path.length >0 ){
+            RouteUtils.go(context,item['url']);
+          }
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              item['icon'],
+              width: 40,
+              height: 40,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Container(
+                height: 20,
+                child: Text(
+                  item['name'],
+                  style: TextStyle(
+                    color: ColorConfig.color33,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 根据  列表个数 算出，整体 需要的高度
+  getListHeight() {
+    var screenWidth = CommonUtils.getScreenWidth(context);
+    // 屏幕宽度 - 左右的margin 15 * 2，-  3个 10 。/4
+    double oneHeight = (screenWidth - 15 * 2 - 10 * 5) / 4;
+    var lines = (listData.length / 4).ceil();
+    return oneHeight * lines + 15 * lines;
+  }
+
+  // 我的服务
+  Widget buildList() {
+    return GridView.count(
+      physics: NeverScrollableScrollPhysics(),
+      //水平子Widget之间间距
+      crossAxisSpacing: 10.0,
+      //垂直子Widget之间间距
+      mainAxisSpacing: 15.0,
+      //GridView内边距
+      padding: EdgeInsets.all(0.0),
+      //一行的Widget数量
+      crossAxisCount: 4,
+      //子Widget宽高比例
+      childAspectRatio: 1.0,
+      //子Widget列表
+      children: getWidgetList(),
     );
   }
 }

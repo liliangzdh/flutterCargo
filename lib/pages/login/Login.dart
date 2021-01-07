@@ -275,7 +275,8 @@ class _Login extends State<Login> with TickerProviderStateMixin {
                   height: 30,
                   child: RaisedButton(
                     color: ColorConfig.colorfff,
-                    splashColor: ColorConfig.colorfff,
+                    splashColor: ColorConfig.colorEf,
+                    highlightColor: ColorConfig.colorEf,
                     elevation: 0,
                     highlightElevation: 0,
                     onPressed: () {
@@ -342,8 +343,10 @@ class _Login extends State<Login> with TickerProviderStateMixin {
               alignment: AlignmentDirectional.centerEnd,
               height: 30,
               child: RaisedButton(
-                color: ColorConfig.colorfff,
                 elevation: 0,
+                color: ColorConfig.colorfff,
+                splashColor: ColorConfig.colorEf,
+                highlightColor: ColorConfig.colorEf,
                 onPressed: () {
                   changeLoginType(true);
                 },

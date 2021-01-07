@@ -61,6 +61,17 @@ flutter:
     - assets/images/home_normal.png
     - assets/images/home_select.png
     - assets/images/my_top_bg.png
+    - assets/images/wallet.png
+
+    - assets/images/my/bill.png
+    - assets/images/my/car_manger.png
+    - assets/images/my/data_statistics.png
+    - assets/images/my/evaluate_manger.png
+    - assets/images/my/insure_icon.png
+    - assets/images/my/invoices_manger.png
+    - assets/images/my/question_consultation.png
+    - assets/images/my/share_icon.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

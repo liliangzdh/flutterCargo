@@ -17,26 +17,34 @@ class JsonConvert<T> {
 
   static _getFromJson<T>(Type type, data, json) {
     switch (type) {			case UserInfoEntity:
-			return userInfoEntityFromJson(data as UserInfoEntity, json) as T;    }
+			return userInfoEntityFromJson(data as UserInfoEntity, json) as T;			case UserInfoOrderVo:
+			return userInfoOrderVoFromJson(data as UserInfoOrderVo, json) as T;			case UserInfoSpUserAuth:
+			return userInfoSpUserAuthFromJson(data as UserInfoSpUserAuth, json) as T;    }
     return data as T;
   }
 
   static _getToJson<T>(Type type, data) {
 		switch (type) {			case UserInfoEntity:
-			return userInfoEntityToJson(data as UserInfoEntity);    }
+			return userInfoEntityToJson(data as UserInfoEntity);			case UserInfoOrderVo:
+			return userInfoOrderVoToJson(data as UserInfoOrderVo);			case UserInfoSpUserAuth:
+			return userInfoSpUserAuthToJson(data as UserInfoSpUserAuth);    }
     return data as T;
   }
   //Go back to a single instance by type
   static _fromJsonSingle(String type, json) {
     switch (type) {			case 'UserInfoEntity':
-			return UserInfoEntity().fromJson(json);    }
+			return UserInfoEntity().fromJson(json);			case 'UserInfoOrderVo':
+			return UserInfoOrderVo().fromJson(json);			case 'UserInfoSpUserAuth':
+			return UserInfoSpUserAuth().fromJson(json);    }
     return null;
   }
 
   //empty list is returned by type
   static _getListFromType(String type) {
     switch (type) {			case 'UserInfoEntity':
-			return List<UserInfoEntity>();    }
+			return List<UserInfoEntity>();			case 'UserInfoOrderVo':
+			return List<UserInfoOrderVo>();			case 'UserInfoSpUserAuth':
+			return List<UserInfoSpUserAuth>();    }
     return null;
   }
 
