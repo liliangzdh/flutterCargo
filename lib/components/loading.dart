@@ -1,30 +1,49 @@
+import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/material.dart';
-import '../theme/Colors.dart';
 
 class Loading extends StatelessWidget {
   final bool isLoading;
   final String text;
+  final GestureTapCallback onTap;
 
-  Loading(this.isLoading, {this.text = '加载中...'});
+  Loading(this.isLoading, {this.text = '加载中...', this.onTap});
 
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return _buildLoading();
+      return _buildLoadingMain();
     }
     return Container();
   }
 
-  _buildLoading() {
+  Widget _buildLoadingMain() {
+    return InkWell(
+      onTap: () {
+        if (onTap != null) {
+          onTap();
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        child: _buildLoading(),
+      ),
+    );
+  }
+
+  Widget _buildLoading() {
     return new Center(
       child: new SizedBox(
-        width: 120,
-        height: 120,
+        width: 130,
+        height: 130,
         child: new Container(
           decoration: ShapeDecoration(
-              color: Colors.black.withOpacity(0.7),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8)))),
+            color: Colors.black.withOpacity(0.7),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
+              ),
+            ),
+          ),
           child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,7 +55,11 @@ class Loading extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20),
                 child: Text(
                   text == null ? '加载中...' : text,
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  maxLines: 1,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
                 ),
               )
             ],

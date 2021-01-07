@@ -4,6 +4,8 @@ class UserInfoEntity with JsonConvert<UserInfoEntity> {
 	int id;
 	String mobile;
 	String headUrl;
+
+	String name;
 	int state;
 	int userType;
 	String caSign;

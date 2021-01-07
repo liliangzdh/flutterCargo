@@ -10,6 +10,9 @@ userInfoEntityFromJson(UserInfoEntity data, Map<String, dynamic> json) {
 	if (json['headUrl'] != null) {
 		data.headUrl = json['headUrl']?.toString();
 	}
+	if (json['name'] != null) {
+		data.name = json['name']?.toString();
+	}
 	if (json['state'] != null) {
 		data.state = json['state']?.toInt();
 	}
@@ -69,6 +72,7 @@ Map<String, dynamic> userInfoEntityToJson(UserInfoEntity entity) {
 	data['id'] = entity.id;
 	data['mobile'] = entity.mobile;
 	data['headUrl'] = entity.headUrl;
+	data['name'] = entity.name;
 	data['state'] = entity.state;
 	data['userType'] = entity.userType;
 	data['caSign'] = entity.caSign;

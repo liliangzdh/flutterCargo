@@ -24,4 +24,5 @@ class ColorConfig {
   static const Color color_909090 = Color(0xFF909090);
   static const Color color_999 = Color(0xFF999999);
   static const Color color_f4f4f4 = Color(0xFFF4F4F4);
+  static const Color color_4DA0FF = Color(0xFF4DA0FF);
 }

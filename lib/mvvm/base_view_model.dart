@@ -7,13 +7,17 @@
 
 import 'dart:async';
 
+import 'package:cargo_flutter_app/mvvm/state/LoadingState.dart';
 import 'package:flutter/cupertino.dart';
 
 abstract class BaseViewModel<T> {
   // 初始化加载 成功。
-  bool loadingState;
+  LoadingState loadingState;
 
-  var loadingStateController = StreamController<bool>.broadcast();
+  // 目标 类。
+  T dataSource;
+
+  var loadingStateController = StreamController<LoadingState>.broadcast();
 
   Sink get loadingStateSink => loadingStateController;
 
@@ -21,22 +25,35 @@ abstract class BaseViewModel<T> {
 
   BaseViewModel() {
     loadingState = initLoadingState();
+    dataSource = initModal();
   }
 
-  setLoading(bool state) {
-    loadingState = state;
+  setLoading({text: '加载中...'}) {
+    loadingState.text = text;
+    loadingState.isLoading = true;
+
     loadingStateSink.add(loadingState);
   }
 
-  bool initLoadingState() {
-    return true;
+  hideLoading() {
+    loadingState.isLoading = false;
+    loadingStateSink.add(loadingState);
+  }
+
+  LoadingState initLoadingState() {
+    return LoadingState(false, "加载中...");
   }
 
   var _dataSourceController = StreamController<T>.broadcast();
 
-  Sink get inputData => _dataSourceController;
+  Sink get inputDataSink => _dataSourceController;
 
-  Stream get outputData => _dataSourceController.stream;
+  Stream get outputDataStream => _dataSourceController.stream;
+
+  updateDataSource(T t){
+    dataSource = t;
+    inputDataSink.add(dataSource);
+  }
 
   dispose() {
     _dataSourceController.close();
@@ -47,4 +64,6 @@ abstract class BaseViewModel<T> {
   keyboardDismiss(BuildContext context) {
     FocusScope.of(context).unfocus();
   }
+
+  T initModal();
 }

@@ -5,8 +5,7 @@ import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'dart:math' as math;
-import '../../../components/tran.dart';
+import '../../../config/config.dart';
 
 class MyCenter extends StatefulWidget {
   @override
@@ -69,133 +68,145 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                       left: 15,
                       right: 15,
                     ),
-                    child: Column(
-                      children: [
-                        buildHeader(),
-                        Expanded(
-                            child: Container(
-                              // color: ColorConfig.color_999,
-                              alignment: Alignment.center,
-                              child: Row(
-                                children: [
-                                  ClipOval(
-                                    child: Image.network(
-                                      'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1278861826,467317210&fm=26&gp=0.jpg',
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
+                    child: StreamBuilder(
+                      stream: appStateBloc.stream,
+                      initialData: appStateBloc.value,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<AppState> snapshot) {
+                        return Column(
+                          children: [
+                            buildHeader(),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  children: [
+                                    ClipOval(
+                                      child: Image.network(
+                                        snapshot.data.userInfo == null?'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1278861826,467317210&fm=26&gp=0.jpg':'${UrlConfig.ImageBaseUlr}${snapshot.data.userInfo.headUrl}',
+                                        width: 50,
+                                        height: 50,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '用户名',
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                '${snapshot.data.userInfo?.startCardValidity != null ?'${snapshot.data.userInfo.name}':''}',
+                                                style: TextStyle(
+                                                  color: ColorConfig.colorfff,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  '企业',
+                                                  style: TextStyle(
+                                                    color:
+                                                        ColorConfig.baseColor,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                margin:
+                                                    EdgeInsets.only(left: 10),
+                                                padding: EdgeInsets.only(
+                                                  left: 10,
+                                                  right: 10,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFFC8E5FF),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4), // 圆角度
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 4),
+                                            child: Text(
+                                              '交易17 | 发货29',
                                               style: TextStyle(
                                                 color: ColorConfig.colorfff,
                                                 fontSize: 14,
                                               ),
                                             ),
-                                            Container(
-                                              child: Text(
-                                                '企业',
-                                                style: TextStyle(
-                                                  color: ColorConfig.baseColor,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                              margin: EdgeInsets.only(left: 10),
-                                              padding: EdgeInsets.only(
-                                                left: 10,
-                                                right: 10,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFFC8E5FF),
-                                                borderRadius:
-                                                BorderRadius.circular(4), // 圆角度
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(top: 4),
-                                          child: Text(
-                                            '交易17 | 发货29',
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 72,
+                              width: double.infinity,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            '0元',
                                             style: TextStyle(
-                                              color: ColorConfig.colorfff,
-                                              fontSize: 14,
-                                            ),
+                                                color: ColorConfig.baseColor),
                                           ),
-                                        )
-                                      ],
+                                          Text(
+                                            '余额（元）',
+                                            style: TextStyle(
+                                                color: ColorConfig.color_999),
+                                          ),
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.only(
+                                        bottom: 20,
+                                      ),
                                     ),
-                                  )
+                                  ),
+                                  Container(
+                                    color: ColorConfig.colorEf,
+                                    width: 1,
+                                    height: double.infinity,
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            '0元',
+                                            style: TextStyle(
+                                                color: ColorConfig.baseColor),
+                                          ),
+                                          Text(
+                                            '我的钱包',
+                                            style: TextStyle(
+                                                color: ColorConfig.color_999),
+                                          ),
+                                        ],
+                                      ),
+                                      padding: EdgeInsets.only(
+                                        bottom: 20,
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            )),
-                        Container(
-                          height: 72,
-                          width: double.infinity,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        '0元',
-                                        style: TextStyle(
-                                            color: ColorConfig.baseColor),
-                                      ),
-                                      Text(
-                                        '余额（元）',
-                                        style: TextStyle(
-                                            color: ColorConfig.color_999),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    bottom: 20,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                color: ColorConfig.colorEf,
-                                width: 1,
-                                height: double.infinity,
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        '0元',
-                                        style: TextStyle(
-                                            color: ColorConfig.baseColor),
-                                      ),
-                                      Text(
-                                        '我的钱包',
-                                        style: TextStyle(
-                                            color: ColorConfig.color_999),
-                                      ),
-                                    ],
-                                  ),
-                                  padding: EdgeInsets.only(
-                                    bottom: 20,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                            ),
+                          ],
+                        );
+                      },
                     ))
               ],
             ),

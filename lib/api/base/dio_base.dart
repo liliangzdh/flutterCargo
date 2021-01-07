@@ -1,6 +1,4 @@
-/*
- * 网络请求接口 单列 模式。
- */
+/// 网络请求接口 单列 模式。
 import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/utils/share_perference_utils.dart';
 import 'package:dio/adapter.dart';
@@ -22,19 +20,18 @@ class ApiManger {
     BaseOptions baseOptions = BaseOptions(
       baseUrl: UrlConfig.ApiBaseUlr,
       connectTimeout: 10 * 1000,
-      receiveTimeout: 30 * 1000,
+      receiveTimeout: 10 * 1000,
     );
 
     // 设置能被花瓶 抓包。
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      // ignore: non_constant_identifier_names
-      client.findProxy = (Uri) {
-        // 用1个开关设置是否开启代理
-        return UrlConfig.isDebug ? 'PROXY 192.168.0.8:8888' : 'DIRECT';
-      };
-    };
-
+    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    //     (client) {
+    //   // ignore: non_constant_identifier_names
+    //   client.findProxy = (Uri) {
+    //     // 用1个开关设置是否开启代理
+    //     return UrlConfig.isDebug ? 'PROXY 192.168.22.51:8888' : 'DIRECT';
+    //   };
+    // };
     dio.options = baseOptions;
   }
 

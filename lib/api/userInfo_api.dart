@@ -5,7 +5,7 @@ import './base/dio_base.dart';
 
 class UserInfoApi {
 
-  // 账户密码登录。
+  /// 获取用户信息。
   static Future<AppResponse> getSpUser() {
     //  loginType 1 为货主端。2为 司机端。
     return ApiManger.instance.sendRequest("userInfo/getSpUser", "post", {});

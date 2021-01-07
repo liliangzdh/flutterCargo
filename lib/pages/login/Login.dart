@@ -1,3 +1,7 @@
+import 'package:cargo_flutter_app/mvvm/state/LoadingState.dart';
+import 'package:cargo_flutter_app/mvvm/state/LoginState.dart';
+import 'package:cargo_flutter_app/utils/toast_utils.dart';
+
 import '../../components/loading.dart';
 import '../../pages/login/LoginViewModel.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +48,8 @@ class _Login extends State<Login> with TickerProviderStateMixin {
   }
 
   // 构建 单个 的输入框。
-  Widget buildInputCell(
-      String tip, String hintText, TextEditingController controller) {
+  Widget buildInputCell(String tip, String hintText, bool isCode,
+      TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,20 +57,30 @@ class _Login extends State<Login> with TickerProviderStateMixin {
           tip,
           style: TextStyle(color: ColorConfig.color33),
         ),
-        TextField(
-          maxLines: 1,
-          controller: controller,
-          style: TextStyle(
-            color: ColorConfig.color33,
-            fontWeight: FontWeight.w700,
-          ),
-          decoration: InputDecoration(
-              hintText: hintText,
-              border: InputBorder.none,
-              hintStyle: TextStyle(
-                color: ColorConfig.color_999,
-                fontWeight: FontWeight.normal,
-              )),
+        Row(
+          children: [
+            Container(
+              child: Expanded(
+                child: TextField(
+                  maxLines: 1,
+                  controller: controller,
+                  style: TextStyle(
+                    color: ColorConfig.color33,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: ColorConfig.color_999,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            buildCode(isCode),
+          ],
         ),
         Line(
           height: 0.5,
@@ -74,6 +88,49 @@ class _Login extends State<Login> with TickerProviderStateMixin {
         ),
       ],
     );
+  }
+
+  Widget buildCode(bool isCode) {
+    if (isCode) {
+      return StreamBuilder<LoginState>(
+        stream: viewModel.outputDataStream,
+        initialData: viewModel.dataSource,
+        builder: (context, snapshot) {
+          var data = snapshot.data;
+          print('$data');
+          return InkWell(
+            onTap: () {
+              if(data.start){
+                ToastUtils.show(msg:'正在倒计时，请稍等');
+                return;
+              }
+              viewModel.sendCode();
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+              child: Text(
+                data.start ? '${data.countdownTime}秒' : '验证码',
+                style: TextStyle(
+                  color: ColorConfig.color_4DA0FF,
+                  fontSize: 12,
+                ),
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                border: Border.all(
+                  color: ColorConfig.color_4DA0FF,
+                  style: BorderStyle.solid,
+                  width: 1.0,
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+    return Container();
   }
 
   @override
@@ -150,15 +207,19 @@ class _Login extends State<Login> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              StreamBuilder<bool>(
+              StreamBuilder<LoadingState>(
                 stream: viewModel.outputLoadingStateStream,
                 initialData: viewModel.loadingState,
                 builder: (context, snapshot) {
                   var data = snapshot.data;
                   print('$data');
                   return Loading(
-                    data,
-                    text: '登录中...',
+                    data.isLoading,
+                    text: data.text,
+                    onTap: () {
+                      // 隐藏
+                      viewModel.hideLoading();
+                    },
                   );
                 },
               ),
@@ -168,13 +229,12 @@ class _Login extends State<Login> with TickerProviderStateMixin {
   }
 
   changeLoginType(bool isCode) {
-    print('-------changeLoginType:$isCode');
     if (isCode) {
       controller.forward();
     } else {
       controller.reverse();
     }
-    Future.delayed(Duration(milliseconds: 250),(){
+    Future.delayed(Duration(milliseconds: 250), () {
       setState(() {
         this.isCode = isCode;
       });
@@ -185,8 +245,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
     if (isCode) {
       // 验证码 登录。
       return SingleChildScrollView(
-        child:
-        Transform(
+        child: Transform(
           transform: Matrix4.rotationY(math.pi),
           alignment: Alignment.center,
           child: Container(
@@ -204,12 +263,12 @@ class _Login extends State<Login> with TickerProviderStateMixin {
                 Padding(
                   padding: EdgeInsets.only(top: 40),
                   child: buildInputCell(
-                      '手机号', '请输入手机号码', viewModel.usernameController),
+                      '手机号', '请输入手机号码', false, viewModel.usernameController),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
-                  child:
-                  buildInputCell('验证码', '请输入验证码', viewModel.codeController),
+                  child: buildInputCell(
+                      '验证码', '请输入验证码', true, viewModel.codeController),
                 ),
                 Container(
                   alignment: AlignmentDirectional.centerEnd,
@@ -241,7 +300,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
                     highlightElevation: 0,
                     disabledElevation: 0,
                     onPressed: () {
-                      viewModel.login(context);
+                      viewModel.login(context, false);
                     },
                     child: Text('验证码登录',
                         style: TextStyle(
@@ -253,8 +312,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
               ],
             ),
           ),
-        )
-        ,
+        ),
       );
     }
     return SingleChildScrollView(
@@ -273,12 +331,12 @@ class _Login extends State<Login> with TickerProviderStateMixin {
             Padding(
               padding: EdgeInsets.only(top: 40),
               child: buildInputCell(
-                  '手机号', '请输入手机号码', viewModel.usernameController),
+                  '手机号', '请输入手机号码', false, viewModel.usernameController),
             ),
             Padding(
               padding: EdgeInsets.only(top: 20),
-              child:
-                  buildInputCell('密码', '请输入登录密码', viewModel.passwordController),
+              child: buildInputCell(
+                  '密码', '请输入登录密码', false, viewModel.passwordController),
             ),
             Container(
               alignment: AlignmentDirectional.centerEnd,
@@ -308,7 +366,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
                 highlightElevation: 0,
                 disabledElevation: 0,
                 onPressed: () {
-                  viewModel.login(context);
+                  viewModel.login(context, true);
                 },
                 child: Text('登录',
                     style: TextStyle(
