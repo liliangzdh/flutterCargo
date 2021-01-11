@@ -6,6 +6,7 @@
  *
  *
  */
+import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,9 @@ class AppComponentState extends State<AppComponent> {
       title: '约货货主端',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor:ColorConfig.baseColor,
+        // primarySwatch: ColorConfig.baseColor,
+        // primarySwatch: Colors.blue,
       ),
       onGenerateRoute: Application.router.generator,
     );

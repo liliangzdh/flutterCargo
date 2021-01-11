@@ -9,11 +9,15 @@ class WayBill extends StatefulWidget {
 }
 
 class _WayBill extends State<WayBill> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: Text('运单'),
-    ));
+      appBar: AppBar(
+        title: Text('运单管理'),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: Text('发货'),
+      ),
+    );
   }
 }

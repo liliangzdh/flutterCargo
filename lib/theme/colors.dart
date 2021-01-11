@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ColorConfig {
-  static const Color baseColor = Color(0xFF4DA0FF);
+  static const Color baseColor = Color(0xFF63B4FF);
+  static const Color baseColorDark = Color(0xFF4DA0FF);
   static const Color colorD1 = Color(0xFFD1D1D1);
   static const Color colorF3 = Color(0xFFF3F4F5);
   static const Color colorFf6 = Color(0xFFFF6334);

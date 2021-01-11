@@ -9,8 +9,15 @@ class Garage extends StatefulWidget {
 }
 
 class _Garage extends State<Garage> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container(child: Text('车库'),));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('车辆管理'),
+        centerTitle: true,
+      ),
+      body: Container(
+        child: Text('车辆'),
+      ),
+    );
   }
 }
