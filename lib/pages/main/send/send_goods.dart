@@ -70,7 +70,9 @@ class _SendGoods extends State<SendGoods> {
         color: sel == 0 ? ColorConfig.colorfff : ColorConfig.baseColor,
         border: Border.all(width: 0.5, color: ColorConfig.colorfff),
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
+          topLeft: Radius.circular(5),
+          bottomLeft: Radius.circular(5),
+        ),
       );
     }
 
@@ -79,7 +81,9 @@ class _SendGoods extends State<SendGoods> {
         border: Border.all(width: 0.5, color: ColorConfig.colorfff),
         color: sel == 2 ? ColorConfig.colorfff : ColorConfig.baseColor,
         borderRadius: BorderRadius.only(
-            topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
+          topRight: Radius.circular(5),
+          bottomRight: Radius.circular(5),
+        ),
       );
     }
 
@@ -107,11 +111,6 @@ class _SendGoods extends State<SendGoods> {
                 child: Container(
                   width: 240,
                   height: 38,
-                  // decoration: new BoxDecoration(
-                  //   border:
-                  //       new Border.all(width: 0, color: ColorConfig.colorfff),
-                  //   borderRadius: new BorderRadius.all(new Radius.circular(5)),
-                  // ),
                   child: TabBar(
                     isScrollable: false,
                     controller: mController,
@@ -120,18 +119,15 @@ class _SendGoods extends State<SendGoods> {
                     indicatorWeight: 0,
                     indicator: ACETabBarIndicator(),
                     unselectedLabelColor: ColorConfig.colorfff,
-                    labelStyle: TextStyle(fontSize: 14.0),
                     tabs: tabList.map((item) {
-                      print("----index:${item.id}");
                       return Tab(
-                        // text: item.title,
                         child: Container(
                           width: double.infinity,
                           decoration: getBox(item.id),
                           alignment: Alignment.center,
                           child: Text(
                             item.title,
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 16),
                             maxLines: 1,
                           ),
                         ),
