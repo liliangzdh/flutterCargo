@@ -344,6 +344,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
               height: 30,
               child: RaisedButton(
                 elevation: 0,
+                highlightElevation: 0,
                 color: ColorConfig.colorfff,
                 splashColor: ColorConfig.colorEf,
                 highlightColor: ColorConfig.colorEf,
