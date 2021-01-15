@@ -1,4 +1,4 @@
-import 'package:cargo_flutter_app/pages/main/garage/Garage.dart';
+import 'package:cargo_flutter_app/pages/main/carage/Garage.dart';
 import 'package:cargo_flutter_app/pages/main/my/my_center.dart';
 import 'package:cargo_flutter_app/pages/main/send/send_goods.dart';
 import 'package:cargo_flutter_app/pages/main/waybill/way_bill.dart';

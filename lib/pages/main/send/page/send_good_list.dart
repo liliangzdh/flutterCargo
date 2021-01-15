@@ -164,7 +164,11 @@ class _SendGoodListState extends State<SendGoodList>
     if (isRefresh) {
       _refreshController.refreshCompleted();
     } else {
-      _refreshController.loadComplete();
+      //   _controller.loadComplete() 和 _controller.loadNoData() 不能同时调用，
+      //   只能调用一次，不然就会出现 hideFooterWhenNotFull 失效的问题。
+      if(!noData){
+        _refreshController.loadComplete();
+      }
     }
 
     if (noData) {

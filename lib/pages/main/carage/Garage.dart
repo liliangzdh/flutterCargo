@@ -1,3 +1,4 @@
+import 'package:cargo_flutter_app/pages/main/send/page/send_good_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

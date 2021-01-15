@@ -67,6 +67,7 @@ class AppComponentState extends State<AppComponent> {
       enableLoadingWhenNoData: false,
       enableRefreshVibrate: false,
       enableLoadMoreVibrate: false,
+      hideFooterWhenNotFull: true,
       shouldFooterFollowWhenNotFull: (state) {
         // If you want load more with noMoreData state ,may be you should return false
         return false;
