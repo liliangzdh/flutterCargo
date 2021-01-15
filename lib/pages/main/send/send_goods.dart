@@ -1,5 +1,6 @@
 import 'package:cargo_flutter_app/components/ace_tabbar_indicator.dart';
 import 'package:cargo_flutter_app/model/tab_title.dart';
+import 'package:cargo_flutter_app/pages/main/send/page/send_good_list.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,8 +12,8 @@ class SendGoods extends StatefulWidget {
   }
 }
 
-class _SendGoods extends State<SendGoods> {
-  PageController mPageController = PageController(initialPage: 0);
+class _SendGoods extends State<SendGoods> with SingleTickerProviderStateMixin{
+  PageController mPageController = PageController();
   TabController mController;
 
   @override
@@ -21,7 +22,7 @@ class _SendGoods extends State<SendGoods> {
     initTabData();
     mController = TabController(
       length: tabList.length,
-      vsync: ScrollableState(),
+      vsync: this,
     );
     mController.addListener(() {
       //TabBar的监听
@@ -138,28 +139,19 @@ class _SendGoods extends State<SendGoods> {
               ),
               Expanded(
                   child: PageView(
-                controller: mPageController,
-                onPageChanged: (int index) {
-                  if (isPageCanChanged) {
-                    //由于PageView切换是会回调这个方法,又会触发切换tabbar的操作,所以定义一个flag,控制PageView的回调
-                    onPageChange(index);
-                  }
-                },
-                children: [
-                  Container(
-                    width: double.infinity,
-                    color: ColorConfig.color33,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    color: ColorConfig.baseColor,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    color: ColorConfig.color_f4f4f4,
-                  ),
-                ],
-              ))
+                    controller: mPageController,
+                    onPageChanged: (int index) {
+                      if (isPageCanChanged) {
+                        //由于PageView切换是会回调这个方法,又会触发切换tabbar的操作,所以定义一个flag,控制PageView的回调
+                        onPageChange(index);
+                      }
+                    },
+                    children: [
+                      SendGoodList(type: 1),
+                      SendGoodList(type: 2),
+                      SendGoodList(type: 3),
+                    ],
+                  ))
             ],
           ),
         ),

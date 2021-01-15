@@ -3,17 +3,19 @@ class AppResponse {
   int code;
   String msg;
   dynamic data;
+  int count;
 
   AppResponse(this.code, this.msg, this.data);
 
   AppResponse.fromJson(Map<String, dynamic> json)
       : this.code = json['code'],
         this.msg = json['msg'],
-        this.data = json['data'];
+        this.data = json['data'],
+        this.count = json['count'];
 
   @override
   String toString() {
-    return 'AppResponse(code=${this.code},msg=${this.msg},data=${this.data})';
+    return 'AppResponse(count=${this.count} code=${this.code},msg=${this.msg},data=${this.data})';
   }
 
   // 响应是否成功

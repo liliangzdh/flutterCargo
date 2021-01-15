@@ -29,7 +29,7 @@ class ApiManger {
       // ignore: non_constant_identifier_names
       client.findProxy = (Uri) {
         // 用1个开关设置是否开启代理
-        return UrlConfig.isDebug ? 'PROXY 192.168.22.51:8888' : 'DIRECT';
+        return UrlConfig.isDebug ? 'PROXY 192.168.11.71:8888' : 'DIRECT';
       };
     };
     dio.options = baseOptions;

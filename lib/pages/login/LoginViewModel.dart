@@ -14,9 +14,9 @@ import 'package:flutter/cupertino.dart';
 
 
 class LoginViewModel extends BaseViewModel<LoginState> {
-  final passwordController = TextEditingController();
+  final passwordController = TextEditingController(text: '123456');
 
-  final usernameController = TextEditingController();
+  final usernameController = TextEditingController(text: '15001197799');
 
   final codeController = TextEditingController();
 

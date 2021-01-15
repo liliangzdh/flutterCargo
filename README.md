@@ -10,6 +10,7 @@
 - fluttertoast toast 
 - rxdart 通知类
 - crypto 加密的，md5加密用到
+- pull_to_refresh 上拉加载更多。下拉刷新的控件
 
 # 导入自己 本地的包。
 - 列如 你需要导入 utils 。这样导入 ，最佳、
@@ -24,4 +25,9 @@ import 'package:cargo_flutter_app/utils/toast_utils.dart';
 
 # 状态管理。统一使用 单列全局 bloc 管理。这个简单好用。
 
-# 代码风格 使用 类似 mvvm ，页面布局和逻辑代码分离。类似 Login.dart 和 LoginViewModel。这两个文件组成一个登陆 页面。
+# 代码风格 
+- 使用 类似 mvvm ，页面布局和逻辑代码分离。类似 Login.dart 和 LoginViewModel。这两个文件组成一个登陆 页面。
+- 简单的没有啥操作的，可以直接setState()。
+
+
+# PageView 可以缓存 使用 AutomaticKeepAliveClientMixin。
