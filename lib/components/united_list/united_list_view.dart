@@ -1,9 +1,9 @@
-import 'package:cargo_flutter_app/components/send/SendGoodItem.dart';
+import 'package:cargo_flutter_app/eventbus/event.dart';
 import 'package:cargo_flutter_app/model/app_response.dart';
+import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import '../loading.dart';
 
 typedef Future<AppResponse> PageRequest(int page, int pageSize);
@@ -12,33 +12,36 @@ typedef Widget ItemBuilder<T>(List<T> list, int position);
 typedef T FromJson<T>(dynamic map);
 
 /// 通用的ListView (自带 下拉刷新。加载更多)
-
-// ignore: must_be_immutable
+// Key childKey = Key("UnitedListView");
 class UnitedListView<T> extends StatefulWidget {
   final ItemBuilder<T> itemBuilder; //单个样式
 
-  PageRequest pageRequest;
+  final PageRequest pageRequest;
 
-  FromJson fromJson;
+  final FromJson fromJson;
 
-  Widget emptyView;
+  final Widget emptyView;
 
-  int pageSize;
-  int page;
+  final int pageSize;
+  final int page;
 
-  bool enablePullDown;
-  bool enablePullUp;
+  final bool enablePullDown;
+  final bool enablePullUp;
+
+  CommonListParams<T> params;
 
   UnitedListView({
+    Key key,
     @required this.itemBuilder,
     @required this.pageRequest,
     @required this.fromJson,
+    this.params,
     this.enablePullDown = true,
     this.enablePullUp = true,
     this.emptyView,
     this.pageSize = 10,
     this.page = 1,
-  });
+  }) : super(key: key);
 
   @override
   State<UnitedListView> createState() {
@@ -47,14 +50,16 @@ class UnitedListView<T> extends StatefulWidget {
 }
 
 class _UnitedListViewState<T> extends State<UnitedListView<T>> {
-  List<T> listData = List();
+  List<T> listData;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
         children: [
-          !isLoading && listData.length == 0 && widget.emptyView != null
+          !widget.params.isLoading &&
+                  listData.length == 0 &&
+                  widget.emptyView != null
               ? widget.emptyView
               : Container(),
           SmartRefresher(
@@ -71,7 +76,8 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
             ),
           ),
           Loading(
-            isLoading,
+            widget.params.isLoading,
+            text: widget.params.loadingText,
             onTap: () {
               // 隐藏
             },
@@ -98,12 +104,16 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     _onRefresh();
     pageSize = widget.pageSize;
     pageNum = pageNum;
+    if (widget.params == null) {
+      widget.params = CommonListParams(listData: List());
+    }
+    listData = widget.params.listData;
   }
 
   int pageSize = 10;
   int pageNum = 1;
   int totalNum = 0;
-  bool isLoading = true;
+  String loadingText;
 
   Future<AppResponse> loadData(int page, int pageSize) async {
     return await widget.pageRequest(page, pageSize);
@@ -117,10 +127,8 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     }
 
     AppResponse res = await loadData(pageNum, pageSize);
-
-    setState(() {
-      isLoading = false;
-    });
+    widget.params.isLoading = false;
+    setState(() {});
 
     if (!res.isOk()) {
       ToastUtils.show(msg: res.msg);

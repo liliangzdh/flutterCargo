@@ -5,12 +5,17 @@ import 'package:flutter/material.dart';
 
 import '../line.dart';
 
+typedef void CancelCollectionAction();
+
 /// 发货中，发货历史。常发货源。三合一。页面的Item。
 class SendGoodItem extends StatelessWidget {
   int type;
   GoodsResourceEntity item;
 
-  SendGoodItem({Key key, this.type = 0, this.item}) : super(key: key);
+  CancelCollectionAction cancelCollectionAction;
+
+  SendGoodItem({Key key, this.type = 0, this.item, this.cancelCollectionAction})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +166,11 @@ class SendGoodItem extends StatelessWidget {
       buildBtn(
         title: '取消',
         color: ColorConfig.color_999,
-        onPressed: () {},
+        onPressed: () {
+          if (cancelCollectionAction != null) {
+            cancelCollectionAction();
+          }
+        },
       ),
       buildBtn(
         title: '再发一单',

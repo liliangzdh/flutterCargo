@@ -1,6 +1,7 @@
 import 'package:cargo_flutter_app/api/goods_resource_api.dart';
 import 'package:cargo_flutter_app/components/send/SendGoodItem.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
+import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,21 +26,30 @@ class _SendGoodListState extends State<SendGoodList>
 
   _SendGoodListState({this.type});
 
+
   bool isLoading = true;
+
+
+  CommonListParams params = CommonListParams<GoodsResourceEntity>(isLoading: true,listData: List(),loadingText: '加载中...');
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Container(
       width: double.infinity,
       color: ColorConfig.color_f4f4f4,
       child: Stack(
         children: [
           UnitedListView<GoodsResourceEntity>(
+            params: params,
             itemBuilder: (List<GoodsResourceEntity> list, int index) {
               return new SendGoodItem(
-                type: 2,
+                type: type,
                 item: list[index],
+                cancelCollectionAction:(){
+                  cancelCollectionAction(list[index]);
+                },
               );
             },
             pageRequest: (int pageNum, int pageSize) {
@@ -76,6 +86,28 @@ class _SendGoodListState extends State<SendGoodList>
         ],
       ),
     );
+  }
+
+
+  // 取消收藏
+  cancelCollectionAction(GoodsResourceEntity item) async{
+    params.loadingText = '取消中';
+    params.isLoading = true;
+    setState(() {
+
+    });
+    await Future.delayed(Duration(seconds: 1));
+    print("listData3-----:${params.isLoading}");
+    for (var bean in params.listData) {
+      if(bean.id == item.id){
+        params.listData.remove(bean);
+        params.isLoading = false;
+        setState(() {
+
+        });
+        return;
+      }
+    }
   }
 
   @override
