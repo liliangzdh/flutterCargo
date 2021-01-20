@@ -1,6 +1,4 @@
 import 'package:cargo_flutter_app/model/app_response.dart';
-import 'package:cargo_flutter_app/utils/common_utils.dart';
-import 'dart:io';
 import './base/dio_base.dart';
 
 class GoodsResourceApi {
@@ -17,6 +15,52 @@ class GoodsResourceApi {
         "pageNumber": pageNumber,
         "pageSize": pageSize,
         "listType": type,
+      },
+    );
+  }
+
+  /// 设置 常发货源
+  static Future<AppResponse> goodsResourceOften({dynamic id}) {
+    return ApiManger.instance.sendRequest(
+      "goodsResource/often",
+      "Post",
+      {
+        "id": id,
+      },
+    );
+  }
+
+  /// 取消常发货源
+  static Future<AppResponse> goodsResourceOftenCancel({dynamic id}) {
+    return ApiManger.instance.sendRequest(
+      "goodsResource/oftenCancel",
+      "Post",
+      {
+        "id": id,
+      },
+    );
+  }
+
+  /// 发货中。取消货源
+  static Future<AppResponse> goodsResourceCancel(
+      {dynamic id, String cancelReason}) {
+    return ApiManger.instance.sendRequest(
+      "goodsResource/cancel",
+      "Post",
+      {
+        "goodsId": id,
+        "cancelReason": cancelReason,
+      },
+    );
+  }
+
+  /// 删除 货源
+  static Future<AppResponse> goodsResourceDel({dynamic id}) {
+    return ApiManger.instance.sendRequest(
+      "goodsResource/del",
+      "Post",
+      {
+        "id": id,
       },
     );
   }

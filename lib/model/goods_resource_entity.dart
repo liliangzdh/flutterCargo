@@ -28,6 +28,7 @@ class GoodsResourceEntity with JsonConvert<GoodsResourceEntity> {
   String createTime;
   String remarks;
   int isSub;
+  // 是否常发 0不是 1是
   int isOften;
 
   getFormatCargoInfoString() {

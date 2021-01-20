@@ -1,5 +1,7 @@
 /// 网络请求接口 单列 模式。
 import 'package:cargo_flutter_app/model/app_response.dart';
+import 'package:cargo_flutter_app/provider/single_global_instance/appstate_bloc.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:cargo_flutter_app/utils/share_perference_utils.dart';
 import 'package:dio/adapter.dart';
 import "package:dio/dio.dart";
@@ -24,15 +26,61 @@ class ApiManger {
     );
 
     // 设置能被花瓶 抓包。
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-    //     (client) {
-    //   // ignore: non_constant_identifier_names
-    //   client.findProxy = (Uri) {
-    //     // 用1个开关设置是否开启代理
-    //     return UrlConfig.isDebug ? 'PROXY 192.168.11.71:8888' : 'DIRECT';
-    //   };
-    // };
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      // ignore: non_constant_identifier_names
+      client.findProxy = (Uri) {
+        // 用1个开关设置是否开启代理
+        return UrlConfig.isDebug ? 'PROXY 192.168.0.20:8888' : 'DIRECT';
+      };
+    };
     dio.options = baseOptions;
+
+
+    // 打印请求,响应日志
+    // dio.interceptors.add(LogInterceptor(responseBody: true));
+
+    // 拦截器。
+    dio.interceptors.add(InterceptorsWrapper(
+        onRequest:(RequestOptions options) async {
+          // 在请求被发送之前做一些事情
+          return options; //continue
+          // 如果你想完成请求并返回一些自定义数据，可以返回一个`Response`对象或返回`dio.resolve(data)`。
+          // 这样请求将会被终止，上层then会被调用，then中返回的数据将是你的自定义数据data.
+          //
+          // 如果你想终止请求并触发一个错误,你可以返回一个`DioError`对象，或返回`dio.reject(errMsg)`，
+          // 这样请求将被中止并触发异常，上层catchError会被调用。
+        },
+        onResponse:(Response response) async {
+          // 在返回响应数据之前做一些预处理
+          AppResponse appResponse;
+          if (response.statusCode == 200) {
+            if (response.data is String) {
+              appResponse =
+              new AppResponse.fromJson(JSON.jsonDecode(response.data));
+            } else {
+              appResponse = new AppResponse.fromJson(response.data);
+            }
+          } else {
+            appResponse = new AppResponse(response.statusCode, '获取数据异常', null);
+          }
+          if(appResponse.code == 702 || appResponse.code == 701){
+            // 登录token 失效。
+            await SharePreferenceUtils.saveToken("");
+            print("------------->401了 清除登录的token");
+            appStateBloc.setUerInfo(null);
+
+            // 跳转登录。
+            RouteUtils.goLogin(null);
+          }
+
+          return response; // continue
+        },
+        onError: (DioError e) async {
+          // 当请求失败时做一些预处理
+          return e;//continue
+        }
+    ));
   }
 
   static ApiManger _getInstance() {
@@ -52,6 +100,8 @@ class ApiManger {
     if (token != null && token.length > 0) {
       dio.options.headers.addAll({"token": token});
     }
+
+
 
     try {
       if (method.toLowerCase() == 'post') {

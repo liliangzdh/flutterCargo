@@ -1,5 +1,6 @@
 import 'package:cargo_flutter_app/mvvm/state/LoadingState.dart';
 import 'package:cargo_flutter_app/mvvm/state/LoginState.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 
 import '../../components/loading.dart';
@@ -45,6 +46,7 @@ class _Login extends State<Login> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     viewModel.dispose();
+    RouteUtils.disLogin();
   }
 
   // 构建 单个 的输入框。

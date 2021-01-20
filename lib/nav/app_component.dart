@@ -14,6 +14,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'application.dart';
 import 'routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cargo_flutter_app/nav/application.dart';
+
+
 
 class AppComponent extends StatefulWidget {
   @override
@@ -32,6 +35,7 @@ class AppComponentState extends State<AppComponent> {
   @override
   Widget build(BuildContext context) {
     final app = MaterialApp(
+      navigatorKey: navigatorKey,
       title: '约货货主端',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -57,7 +61,7 @@ class AppComponentState extends State<AppComponent> {
       },
       onGenerateRoute: Application.router.generator,
     );
-//    print("initial route = ${app.initialRoute}");
+   // print("initial route = ${app.initialRoute}");
 
     return RefreshConfiguration(
       footerTriggerDistance: 15,

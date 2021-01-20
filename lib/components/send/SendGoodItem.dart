@@ -5,17 +5,25 @@ import 'package:flutter/material.dart';
 
 import '../line.dart';
 
-typedef void CancelCollectionAction();
+const CancelGoodsAction = "CancelGoodsAction"; //取消货源
+const CancelCollectionAction = "CancelCollectionAction"; //取消常发货源
+const SaveCollectionAction = "SaveCollectionAction"; //设置常发货源
+const DelCollectionAction = "DelCollectionAction"; //删除常发货源
+
+typedef void Action(String actionName);
 
 /// 发货中，发货历史。常发货源。三合一。页面的Item。
 class SendGoodItem extends StatelessWidget {
-  int type;
-  GoodsResourceEntity item;
+  final int type;
+  final GoodsResourceEntity item;
+  final Action action;
 
-  CancelCollectionAction cancelCollectionAction;
-
-  SendGoodItem({Key key, this.type = 0, this.item, this.cancelCollectionAction})
-      : super(key: key);
+  SendGoodItem({
+    Key key,
+    this.type = 0,
+    this.item,
+    this.action,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +146,11 @@ class SendGoodItem extends StatelessWidget {
         buildBtn(
           title: '删除货源',
           color: ColorConfig.color_999,
-          onPressed: () {},
+          onPressed: () {
+            if (action != null) {
+              action(CancelGoodsAction);
+            }
+          },
         ),
         buildBtn(
           title: '指定司机',
@@ -151,10 +163,28 @@ class SendGoodItem extends StatelessWidget {
     if (type == 2) {
       return [
         buildBtn(
-          title: '存为常发货源',
-          color: ColorConfig.color_999,
-          onPressed: () {},
+          title: '删除',
+          width: 40,
+          color: ColorConfig.color_4DA0FF,
+          onPressed: () {
+            if (action != null) {
+              action(DelCollectionAction);
+            }
+          },
         ),
+        //isOften 是否是常发
+        item.isOften == 0
+            ? buildBtn(
+                title: '存为常发货源',
+                width: 80,
+                color: ColorConfig.color_999,
+                onPressed: () {
+                  if (action != null) {
+                    action(SaveCollectionAction);
+                  }
+                },
+              )
+            : Container(),
         buildBtn(
           title: '再发一单',
           color: ColorConfig.color_4DA0FF,
@@ -167,8 +197,8 @@ class SendGoodItem extends StatelessWidget {
         title: '取消',
         color: ColorConfig.color_999,
         onPressed: () {
-          if (cancelCollectionAction != null) {
-            cancelCollectionAction();
+          if (action != null) {
+            action(CancelCollectionAction);
           }
         },
       ),
@@ -180,9 +210,10 @@ class SendGoodItem extends StatelessWidget {
     ];
   }
 
-  Widget buildBtn({String title, Color color, VoidCallback onPressed}) {
+  Widget buildBtn(
+      {String title, Color color, VoidCallback onPressed, double width = 60}) {
     return Container(
-      width: 60 + (title.length - 4 > 0 ? 24.0 : 0.0),
+      width: width,
       height: 30,
       margin: EdgeInsets.only(left: 10),
       child: RaisedButton(

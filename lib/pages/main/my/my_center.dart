@@ -327,7 +327,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
         onPressed: () {
           String path = item['url'];
           if (path != null && path.length > 0) {
-            RouteUtils.go(context, item['url']);
+             RouteUtils.go(context, item['url']);
           }
         },
         child: Column(

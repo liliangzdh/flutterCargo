@@ -1,16 +1,24 @@
 import 'package:cargo_flutter_app/api/goods_resource_api.dart';
+import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
+import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/send/SendGoodItem.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
+import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+// 货源请求
+typedef Future<AppResponse> GoodsResourceRequest();
 
 /// 发货中，发货历史。常发货源。三合一。
 
 class SendGoodList extends StatefulWidget {
-  int type;
+  final int type;
 
   SendGoodList({this.type});
 
@@ -26,16 +34,20 @@ class _SendGoodListState extends State<SendGoodList>
 
   _SendGoodListState({this.type});
 
-
   bool isLoading = true;
 
+  CommonListParams params = CommonListParams<GoodsResourceEntity>(
+      isLoading: true, listData: List(), loadingText: '加载中...');
 
-  CommonListParams params = CommonListParams<GoodsResourceEntity>(isLoading: true,listData: List(),loadingText: '加载中...');
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return Container(
       width: double.infinity,
       color: ColorConfig.color_f4f4f4,
@@ -47,8 +59,8 @@ class _SendGoodListState extends State<SendGoodList>
               return new SendGoodItem(
                 type: type,
                 item: list[index],
-                cancelCollectionAction:(){
-                  cancelCollectionAction(list[index]);
+                action: (actionString) {
+                  action(list[index], actionString);
                 },
               );
             },
@@ -88,22 +100,106 @@ class _SendGoodListState extends State<SendGoodList>
     );
   }
 
+  action(GoodsResourceEntity item, String actionStr) {
+    switch (actionStr) {
+      case DelCollectionAction:
+        delCollectAction(item);
+        break;
+      case CancelCollectionAction:
+        cancelCollectionAction(item);
+        break;
+      case SaveCollectionAction:
+        saveCollectionAction(item);
+        break;
+      case CancelGoodsAction:
+        cancelGoodsAction(item);
+        break;
+    }
+  }
+
+  // 收藏
+  saveCollectionAction(GoodsResourceEntity item) async {
+    setState(() {
+      params.loadingText = '正在收藏';
+      params.isLoading = true;
+    });
+    AppResponse response =
+        await GoodsResourceApi.goodsResourceOften(id: item.id);
+    if (!response.isOk()) {
+      ToastUtils.show(msg: response.msg);
+      setState(() {
+        params.isLoading = false;
+      });
+      return;
+    }
+    setState(() {
+      item.isOften = 1;
+      params.isLoading = false;
+    });
+    return;
+  }
 
   // 取消收藏
-  cancelCollectionAction(GoodsResourceEntity item) async{
-    params.loadingText = '取消中';
-    params.isLoading = true;
-    setState(() {
+  cancelCollectionAction(GoodsResourceEntity item) async {
+    await removeItemAsync(
+        loadingText: '取消中',
+        item: item,
+        apiReq: () {
+          return GoodsResourceApi.goodsResourceOftenCancel(id: item.id);
+        });
+  }
 
+  // 删除 发货历史 里面的货源
+  delCollectAction(GoodsResourceEntity item) async {
+    await removeItemAsync(
+        loadingText: '正在删除',
+        item: item,
+        apiReq: () {
+          return GoodsResourceApi.goodsResourceDel(id: item.id);
+        });
+  }
+
+  CommonModalUtils commonModalUtils;
+
+  // 发货中，取消货源
+  cancelGoodsAction(GoodsResourceEntity item) async {
+    if (commonModalUtils == null) {
+      commonModalUtils = CommonModalUtils();
+    }
+    commonModalUtils.showCancelReasonModal(context, item, (m) async {
+      await removeItemAsync(
+          loadingText: '正在取消',
+          item: item,
+          apiReq: () {
+            return GoodsResourceApi.goodsResourceCancel(
+                id: item.id, cancelReason: m);
+          });
     });
-    await Future.delayed(Duration(seconds: 1));
-    print("listData3-----:${params.isLoading}");
-    for (var bean in params.listData) {
-      if(bean.id == item.id){
-        params.listData.remove(bean);
-        params.isLoading = false;
-        setState(() {
+  }
 
+  // 列表有删除操作的地方。 通用的 请求。
+  removeItemAsync({
+    String loadingText = '删除中',
+    GoodsResourceEntity item,
+    GoodsResourceRequest apiReq,
+  }) async {
+    setState(() {
+      params.loadingText = loadingText;
+      params.isLoading = true;
+    });
+    AppResponse response = await apiReq();
+    if (!response.isOk()) {
+      ToastUtils.show(msg: response.msg);
+      setState(() {
+        params.isLoading = false;
+      });
+      return;
+    }
+    for (var bean in params.listData) {
+      if (bean.id == item.id) {
+        setState(() {
+          params.listData.remove(bean);
+          params.isLoading = false;
         });
         return;
       }

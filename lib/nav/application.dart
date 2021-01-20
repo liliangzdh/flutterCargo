@@ -7,7 +7,9 @@
  * See LICENSE for distribution and usage details.
  */
 import 'package:fluro/fluro.dart';
+import 'package:flutter/widgets.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 class Application {
   static FluroRouter router;
 }
