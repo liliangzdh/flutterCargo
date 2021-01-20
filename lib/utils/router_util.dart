@@ -3,7 +3,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/widgets.dart';
 
 class RouteUtils {
-  // 避免 弹 出 登录界面多次。
+  // 避免 弹 出 多个 登录界面。
   static var _isGoLogin = false;
 
   static disLogin() {
@@ -11,7 +11,7 @@ class RouteUtils {
   }
 
   static goLogin(BuildContext context) {
-    context = context == null ? navigatorKey.currentState.context : context;
+    context = context ?? navigatorKey.currentState.context;
     go(context, 'login');
   }
 

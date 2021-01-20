@@ -1,8 +1,10 @@
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
+import '../line.dart';
 import '../raised_button.dart';
 
 const CancelReason = ['已找到司机', '货不走了', '没找到车', '其他原因'];
@@ -90,6 +92,121 @@ class CommonModalUtils {
           children: reasonWidgetList,
         ),
       ),
+    );
+  }
+
+  ///
+  showCommonCancelDialog(BuildContext context,
+      {String title = '确定删除么', VoidCallback onPressed}) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          margin: EdgeInsets.all(20),
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 60,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(5.0),
+                      topRight: Radius.circular(5.0),
+                    ),
+                    color: ColorConfig.colorfff,
+                  ),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: ColorConfig.color33,
+                      fontSize: 16,
+                      decoration: TextDecoration.none,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                Line(),
+                Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.0),
+                      bottomRight: Radius.circular(5.0),
+                    ),
+                    color: ColorConfig.colorfff,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: MyRaisedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              alignment: Alignment.center,
+                              child: Text(
+                                '取消',
+                                style: TextStyle(
+                                  color: ColorConfig.color33,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 1,
+                        color: ColorConfig.color_E6E6E6,
+                      ),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: MyRaisedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              if (onPressed != null) {
+                                onPressed();
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              alignment: Alignment.center,
+                              child: Text(
+                                '确定',
+                                style: TextStyle(
+                                  color: ColorConfig.color33,
+                                  fontSize: 16,
+                                  decoration: TextDecoration.none,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,5 @@
 import 'package:cargo_flutter_app/api/goods_resource_api.dart';
 import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
-import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/send/SendGoodItem.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
 import 'package:cargo_flutter_app/model/app_response.dart';
@@ -10,7 +9,6 @@ import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 // 货源请求
 typedef Future<AppResponse> GoodsResourceRequest();
@@ -117,7 +115,7 @@ class _SendGoodListState extends State<SendGoodList>
     }
   }
 
-  // 收藏
+  /// 收藏
   saveCollectionAction(GoodsResourceEntity item) async {
     setState(() {
       params.loadingText = '正在收藏';
@@ -139,34 +137,50 @@ class _SendGoodListState extends State<SendGoodList>
     return;
   }
 
-  // 取消收藏
+  /// 取消收藏
   cancelCollectionAction(GoodsResourceEntity item) async {
-    await removeItemAsync(
-        loadingText: '取消中',
-        item: item,
-        apiReq: () {
-          return GoodsResourceApi.goodsResourceOftenCancel(id: item.id);
-        });
+    getCommonModalUtils().showCommonCancelDialog(
+      context,
+      title: '确定取消收藏么',
+      onPressed: () async {
+        await removeItemAsync(
+          loadingText: '取消中',
+          item: item,
+          apiReq: () {
+            return GoodsResourceApi.goodsResourceOftenCancel(id: item.id);
+          },
+        );
+      },
+    );
   }
 
   // 删除 发货历史 里面的货源
   delCollectAction(GoodsResourceEntity item) async {
-    await removeItemAsync(
-        loadingText: '正在删除',
-        item: item,
-        apiReq: () {
-          return GoodsResourceApi.goodsResourceDel(id: item.id);
-        });
+    getCommonModalUtils().showCommonCancelDialog(
+      context,
+      title: '确定取消删除么',
+      onPressed: () async {
+        await removeItemAsync(
+          loadingText: '正在删除',
+          item: item,
+          apiReq: () {
+            return GoodsResourceApi.goodsResourceDel(id: item.id);
+          },
+        );
+      },
+    );
   }
 
   CommonModalUtils commonModalUtils;
 
+  CommonModalUtils getCommonModalUtils() {
+    commonModalUtils = commonModalUtils ?? CommonModalUtils();
+    return commonModalUtils;
+  }
+
   // 发货中，取消货源
   cancelGoodsAction(GoodsResourceEntity item) async {
-    if (commonModalUtils == null) {
-      commonModalUtils = CommonModalUtils();
-    }
-    commonModalUtils.showCancelReasonModal(context, item, (m) async {
+    getCommonModalUtils().showCancelReasonModal(context, item, (m) async {
       await removeItemAsync(
           loadingText: '正在取消',
           item: item,
