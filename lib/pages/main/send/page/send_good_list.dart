@@ -112,6 +112,15 @@ class _SendGoodListState extends State<SendGoodList>
       case CancelGoodsAction:
         cancelGoodsAction(item);
         break;
+      case AgainAction:
+        ToastUtils.show(msg: '待跳转发货页面');
+        break;
+      case ItemAction:
+        ToastUtils.show(msg: '待跳转到详情');
+        break;
+      case DriverAction:
+        ToastUtils.show(msg: '待指定司机');
+        break;
     }
   }
 

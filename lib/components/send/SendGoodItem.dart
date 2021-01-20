@@ -1,3 +1,4 @@
+import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,9 @@ const CancelGoodsAction = "CancelGoodsAction"; //取消货源
 const CancelCollectionAction = "CancelCollectionAction"; //取消常发货源
 const SaveCollectionAction = "SaveCollectionAction"; //设置常发货源
 const DelCollectionAction = "DelCollectionAction"; //删除常发货源
+const AgainAction = "AgainAction"; //删除常发货源
+const ItemAction = "ItemAction";
+const DriverAction = "DriverAction"; // 指定司机
 
 typedef void Action(String actionName);
 
@@ -27,115 +31,123 @@ class SendGoodItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorConfig.colorfff,
-      child: Stack(
-        alignment: Alignment.topRight,
-        children: [
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 12, right: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
-                        child: Text(
-                          '${item.fromCity}${item.fromArea} → ${item.toCity}${item.toArea}',
-                          style: TextStyle(
-                            color: ColorConfig.color33,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
+    return MyRaisedButton(
+      onPressed: () {
+        if (action != null) {
+          action(ItemAction);
+        }
+      },
+      child: Container(
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 12, right: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                          child: Text(
+                            '${item.fromCity}${item.fromArea} → ${item
+                                .toCity}${item.toArea}',
+                            style: TextStyle(
+                              color: ColorConfig.color33,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        item.getFormatCargoInfoString(),
-                        style: TextStyle(
-                          color: ColorConfig.color_999,
-                          fontSize: 12,
+                        Text(
+                          item.getFormatCargoInfoString(),
+                          style: TextStyle(
+                            color: ColorConfig.color_999,
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                      ((item.predictPrice > 0 || item.deposit > 0) && type == 1)
-                          ? Padding(
-                              padding: EdgeInsets.only(top: 15, bottom: 15),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '预估运费 ${item.predictPrice}',
+                        ((item.predictPrice > 0 || item.deposit > 0) &&
+                            type == 1)
+                            ? Padding(
+                          padding: EdgeInsets.only(top: 15, bottom: 15),
+                          child: Row(
+                            children: [
+                              Text(
+                                '预估运费 ${item.predictPrice}',
+                                style: TextStyle(
+                                  color: ColorConfig.color33,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    '定金 ${item.deposit}',
                                     style: TextStyle(
                                       color: ColorConfig.color33,
                                       fontSize: 12,
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        '定金 ${item.deposit}',
-                                        style: TextStyle(
-                                          color: ColorConfig.color33,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.only(top: 0, bottom: 15),
-                            ),
-                    ],
-                  ),
-                ),
-                Line(
-                  height: 1,
-                  color: ColorConfig.color_E6E6E6,
-                ),
-                Container(
-                  height: 46,
-                  margin: EdgeInsets.only(right: 12, left: 12),
-                  child: Row(
-                    children: [
-                      type != 3
-                          ? Text(
-                              '${item.createTime}',
-                              style: TextStyle(
-                                color: ColorConfig.color_999,
-                                fontSize: 12,
-                              ),
-                            )
-                          : Container(),
-                      Expanded(
-                        child: Container(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: buildBottomBtn(),
+                            ],
                           ),
+                        )
+                            : Container(
+                          padding: EdgeInsets.only(top: 0, bottom: 15),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Line(
-                  height: 10,
-                  color: ColorConfig.color_f4f4f4,
-                ),
-              ],
+                  Line(
+                    height: 1,
+                    color: ColorConfig.color_E6E6E6,
+                  ),
+                  Container(
+                    height: 46,
+                    margin: EdgeInsets.only(right: 12, left: 12),
+                    child: Row(
+                      children: [
+                        type != 3
+                            ? Text(
+                          '${item.createTime}',
+                          style: TextStyle(
+                            color: ColorConfig.color_999,
+                            fontSize: 12,
+                          ),
+                        )
+                            : Container(),
+                        Expanded(
+                          child: Container(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: buildBottomBtn(),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Line(
+                    height: 10,
+                    color: ColorConfig.color_f4f4f4,
+                  ),
+                ],
+              ),
             ),
-          ),
-          type == 1
-              ? Image.asset(
-                  'assets/images/stay_receiving_orders.png',
-                  width: 44,
-                  height: 44,
-                )
-              : Container()
-        ],
+            type == 1
+                ? Image.asset(
+              'assets/images/stay_receiving_orders.png',
+              width: 44,
+              height: 44,
+            )
+                : Container()
+          ],
+        ),
       ),
     );
   }
@@ -155,7 +167,11 @@ class SendGoodItem extends StatelessWidget {
         buildBtn(
           title: '指定司机',
           color: ColorConfig.color_4DA0FF,
-          onPressed: () {},
+          onPressed: () {
+            if (action != null) {
+              action(DriverAction);
+            }
+          },
         ),
       ];
     }
@@ -175,20 +191,24 @@ class SendGoodItem extends StatelessWidget {
         //isOften 是否是常发
         item.isOften == 0
             ? buildBtn(
-                title: '存为常发货源',
-                width: 80,
-                color: ColorConfig.color_999,
-                onPressed: () {
-                  if (action != null) {
-                    action(SaveCollectionAction);
-                  }
-                },
-              )
+          title: '存为常发货源',
+          width: 80,
+          color: ColorConfig.color_999,
+          onPressed: () {
+            if (action != null) {
+              action(SaveCollectionAction);
+            }
+          },
+        )
             : Container(),
         buildBtn(
           title: '再发一单',
           color: ColorConfig.color_4DA0FF,
-          onPressed: () {},
+          onPressed: () {
+            if (action != null) {
+              action(AgainAction);
+            }
+          },
         ),
       ];
     }
@@ -205,7 +225,11 @@ class SendGoodItem extends StatelessWidget {
       buildBtn(
         title: '再发一单',
         color: ColorConfig.color_4DA0FF,
-        onPressed: () {},
+        onPressed: () {
+          if (action != null) {
+            action(AgainAction);
+          }
+        },
       ),
     ];
   }
