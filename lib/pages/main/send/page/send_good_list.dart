@@ -2,10 +2,12 @@ import 'package:cargo_flutter_app/api/goods_resource_api.dart';
 import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
 import 'package:cargo_flutter_app/components/send/SendGoodItem.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
+import 'package:cargo_flutter_app/eventbus/event.dart';
 import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +38,39 @@ class _SendGoodListState extends State<SendGoodList>
 
   CommonListParams params = CommonListParams<GoodsResourceEntity>(
       isLoading: true, listData: List(), loadingText: '加载中...');
+  var eventBusFn;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    eventBusFn = eventBus.on<SendGoodsListAction>().listen((event) {
+      if (type == event.type) {
+        print("-------$event");
+        switch (event.key) {
+          case CancelCollectionAction:
+            // 接收 取消收藏通知。发货历史 更新一下。
+            for (var value in params.listData) {
+              if (value.id == event.entity.id) {
+                value.isOften = 0;
+                setState(() {});
+                return;
+              }
+            }
+            break;
+          case SaveCollectionAction:
+            // 接收到 设置 收藏。常发货源 添加一个。
+            params.listData.add(event.entity);
+            break;
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    //取消订阅
+    eventBusFn.cancel();
   }
 
   @override
@@ -116,7 +146,7 @@ class _SendGoodListState extends State<SendGoodList>
         ToastUtils.show(msg: '待跳转发货页面');
         break;
       case ItemAction:
-        ToastUtils.show(msg: '待跳转到详情');
+        RouteUtils.go(context, CargoDetailKeyString);
         break;
       case DriverAction:
         ToastUtils.show(msg: '待指定司机');
@@ -143,6 +173,12 @@ class _SendGoodListState extends State<SendGoodList>
       item.isOften = 1;
       params.isLoading = false;
     });
+
+    //确定收藏。常发货源。对应的 添加一条记录。
+    eventBus.fire(
+      SendGoodsListAction(type: 3, entity: item, key: SaveCollectionAction),
+    );
+
     return;
   }
 
@@ -152,13 +188,19 @@ class _SendGoodListState extends State<SendGoodList>
       context,
       title: '确定取消收藏么',
       onPressed: () async {
-        await removeItemAsync(
+        var isSuccess = await removeItemAsync(
           loadingText: '取消中',
           item: item,
           apiReq: () {
             return GoodsResourceApi.goodsResourceOftenCancel(id: item.id);
           },
         );
+
+        if (isSuccess) {
+          // 取消收藏。发货历史页面。对应的刷新一下。
+          eventBus.fire(SendGoodsListAction(
+              type: 2, entity: item, key: CancelCollectionAction));
+        }
       },
     );
   }
@@ -201,7 +243,7 @@ class _SendGoodListState extends State<SendGoodList>
   }
 
   // 列表有删除操作的地方。 通用的 请求。
-  removeItemAsync({
+  Future<bool> removeItemAsync({
     String loadingText = '删除中',
     GoodsResourceEntity item,
     GoodsResourceRequest apiReq,
@@ -216,7 +258,7 @@ class _SendGoodListState extends State<SendGoodList>
       setState(() {
         params.isLoading = false;
       });
-      return;
+      return false;
     }
     for (var bean in params.listData) {
       if (bean.id == item.id) {
@@ -224,9 +266,10 @@ class _SendGoodListState extends State<SendGoodList>
           params.listData.remove(bean);
           params.isLoading = false;
         });
-        return;
+        return true;
       }
     }
+    return false;
   }
 
   @override
