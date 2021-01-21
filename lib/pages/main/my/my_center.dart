@@ -218,7 +218,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  EdgeInsets.only(top: 8),
+                                                  EdgeInsets.only(top: 4),
                                                   child: Text(
                                                     '余额（元）',
                                                     style: TextStyle(
@@ -253,7 +253,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  EdgeInsets.only(top: 8),
+                                                  EdgeInsets.only(top: 4),
                                                   child: Text(
                                                     '我的钱包',
                                                     style: TextStyle(

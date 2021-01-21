@@ -1,5 +1,7 @@
 import 'package:cargo_flutter_app/nav/application.dart';
+import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 const String RootKeyString = "/";
@@ -32,7 +34,22 @@ class RouteUtils {
     Application.router.navigateTo(
       context,
       '$path',
-      transition: TransitionType.inFromRight,
+      transition: TransitionType.material,
     );
   }
+
+  // static go(BuildContext context, String path) {
+  //   // if (path == LoginKeyString) {
+  //   //   if (_isGoLogin) {
+  //   //     // 如果已经 去了 登录界面。
+  //   //     print("已经去了登录界面");
+  //   //     return;
+  //   //   }
+  //   //   _isGoLogin = true;
+  //   // }
+  //
+  //   // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+  //   //   return new Login();
+  //   // }));
+  // }
 }

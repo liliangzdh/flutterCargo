@@ -16,8 +16,6 @@ import 'routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cargo_flutter_app/nav/application.dart';
 
-
-
 class AppComponent extends StatefulWidget {
   @override
   State createState() {
@@ -40,6 +38,7 @@ class AppComponentState extends State<AppComponent> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: ColorConfig.baseColor,
+        platform: TargetPlatform.iOS,
         // primarySwatch: ColorConfig.baseColor,
         // primarySwatch: Colors.blue,
       ),
@@ -61,7 +60,7 @@ class AppComponentState extends State<AppComponent> {
       },
       onGenerateRoute: Application.router.generator,
     );
-   // print("initial route = ${app.initialRoute}");
+    // print("initial route = ${app.initialRoute}");
 
     return RefreshConfiguration(
       footerTriggerDistance: 15,
