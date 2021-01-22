@@ -1,5 +1,4 @@
 import 'package:cargo_flutter_app/nav/application.dart';
-import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

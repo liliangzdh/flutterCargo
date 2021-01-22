@@ -70,6 +70,7 @@ flutter:
     - assets/images/wallet.png
     - assets/images/stay_receiving_orders.png
     - assets/images/no_data.png
+    - assets/images/alarm_clock.png
 
     - assets/images/my/bill.png
     - assets/images/my/car_manger.png
@@ -79,6 +80,7 @@ flutter:
     - assets/images/my/invoices_manger.png
     - assets/images/my/question_consultation.png
     - assets/images/my/share_icon.png
+
 
 
 

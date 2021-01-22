@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class MyRaisedButton extends StatelessWidget {
   final Color color;
-  final Color splashColor;
   final Color highlightColor;
   final double elevation;
   final double highlightElevation;
@@ -13,7 +12,6 @@ class MyRaisedButton extends StatelessWidget {
 
   MyRaisedButton({
     this.color = ColorConfig.colorfff,
-    this.splashColor = ColorConfig.colorfff,
     this.highlightColor = ColorConfig.colorEf,
     this.elevation = 0,
     this.highlightElevation = 0,
@@ -25,7 +23,7 @@ class MyRaisedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       color: color,
-      splashColor: splashColor,
+      splashColor: highlightColor,
       highlightColor: highlightColor,
       elevation: elevation,
       highlightElevation: highlightElevation,
