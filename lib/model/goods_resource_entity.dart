@@ -27,7 +27,12 @@ class GoodsResourceEntity with JsonConvert<GoodsResourceEntity> {
   String pack;
   String createTime;
   String remarks;
+  double distance;
   int isSub;
+
+  String predictSendTimeText;
+  String predictSendTimeEnd;
+
   // 是否常发 0不是 1是
   int isOften;
 
@@ -48,10 +53,10 @@ class GoodsResourceEntity with JsonConvert<GoodsResourceEntity> {
       res += carTypeString;
     }
     var volumeString = '';
-    if (volume != null && volume.length > 0 && double.parse(volume) >0) {
+    if (volume != null && volume.length > 0 && double.parse(volume) > 0) {
       volumeString += volume + '方';
     }
-    if (weight != null && weight.length > 0 && double.parse(weight) >0) {
+    if (weight != null && weight.length > 0 && double.parse(weight) > 0) {
       if (volumeString.length > 0) {
         volumeString += ' ';
       }
@@ -71,5 +76,30 @@ class GoodsResourceEntity with JsonConvert<GoodsResourceEntity> {
     }
 
     return res;
+  }
+
+  getCarString() {
+    var res = '';
+    if (carModel != null && carModel.length > 0) {
+      res += ' , ' + carModel;
+    }
+    if (carLength != null && carLength.length > 0) {
+      res += ' , ' + carLength;
+    }
+    return res;
+  }
+
+  allFromCity() {
+    return (fromProvince ?? "") +
+        (fromCity ?? "") +
+        (fromArea ?? "") +
+        (fromAddress ?? "");
+  }
+
+  allToCity() {
+    return (toProvince ?? "") +
+        (toCity ?? "") +
+        (toArea ?? "") +
+        (toAddress ?? "");
   }
 }

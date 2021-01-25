@@ -101,7 +101,6 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
   @override
   void initState() {
     super.initState();
-    _onRefresh();
     pageSize = widget.pageSize;
     pageNum = pageNum;
     if (widget.params == null) {

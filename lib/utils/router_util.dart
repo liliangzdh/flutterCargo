@@ -20,7 +20,7 @@ class RouteUtils {
     go(context, LoginKeyString);
   }
 
-  static go(BuildContext context, String path) {
+  static go(BuildContext context, String path, {dynamic params}) {
     if (path == LoginKeyString) {
       if (_isGoLogin) {
         // 如果已经 去了 登录界面。
@@ -30,25 +30,40 @@ class RouteUtils {
       _isGoLogin = true;
     }
 
+    String query = "";
+    if (params != null) {
+      int index = 0;
+      for (var key in params.keys) {
+        var value= params[key];
+        if (index == 0) {
+          query = "?";
+        } else {
+          query = query + "\&";
+        }
+        query += "$key=$value";
+        index++;
+      }
+    }
+
     Application.router.navigateTo(
       context,
-      '$path',
+      '$path$query',
       transition: TransitionType.material,
     );
   }
 
-  // static go(BuildContext context, String path) {
-  //   // if (path == LoginKeyString) {
-  //   //   if (_isGoLogin) {
-  //   //     // 如果已经 去了 登录界面。
-  //   //     print("已经去了登录界面");
-  //   //     return;
-  //   //   }
-  //   //   _isGoLogin = true;
-  //   // }
-  //
-  //   // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-  //   //   return new Login();
-  //   // }));
-  // }
+// static go(BuildContext context, String path) {
+//   // if (path == LoginKeyString) {
+//   //   if (_isGoLogin) {
+//   //     // 如果已经 去了 登录界面。
+//   //     print("已经去了登录界面");
+//   //     return;
+//   //   }
+//   //   _isGoLogin = true;
+//   // }
+//
+//   // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+//   //   return new Login();
+//   // }));
+// }
 }

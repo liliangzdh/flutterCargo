@@ -1,14 +1,25 @@
+import 'package:cargo_flutter_app/api/goods_resource_api.dart';
 import 'package:cargo_flutter_app/components/line.dart';
+import 'package:cargo_flutter_app/components/loading.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
+import 'package:cargo_flutter_app/model/app_response.dart';
+import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/common_utils.dart';
+import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 /// 货源详情
 class CargoDetail extends StatefulWidget {
-  CargoDetail({
-    Key key,
-  }) : super(key: key);
+  final int cargoId;
+  final bool isSend; // 是否是正在发货;
+
+  CargoDetail(
+      this.cargoId,
+      this.isSend, {
+        Key key,
+      }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -17,6 +28,8 @@ class CargoDetail extends StatefulWidget {
 }
 
 class _CargoDetailState extends State<CargoDetail> {
+  bool isLoading = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +59,7 @@ class _CargoDetailState extends State<CargoDetail> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  '南昌南昌县 → 赣州章贡',
+                                  '${goodsResourceEntity.fromCity ?? ''}${goodsResourceEntity.fromArea ?? ''} → ${goodsResourceEntity.toCity ?? ""}${goodsResourceEntity.toArea ?? ""}',
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -71,7 +84,8 @@ class _CargoDetailState extends State<CargoDetail> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: '   377.6km',
+                                      text:
+                                      '   ${goodsResourceEntity.distance ?? ""}km',
                                       style: TextStyle(
                                         color: ColorConfig.color33,
                                         fontSize: 14,
@@ -100,7 +114,12 @@ class _CargoDetailState extends State<CargoDetail> {
                     ),
                   ),
                   // 车货信息
-                  Container(
+                  CommonUtils.isStringEmpty(goodsResourceEntity.carModel) ||
+                      CommonUtils.isStringEmpty(
+                          goodsResourceEntity.goodsName) ||
+                      CommonUtils.isStringEmpty(
+                          goodsResourceEntity.goodsTypeName)
+                      ? Container(
                     margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.all(10),
                     color: ColorConfig.colorfff,
@@ -109,15 +128,20 @@ class _CargoDetailState extends State<CargoDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '车货信息',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            '车货信息',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                        !CommonUtils.isStringEmpty(
+                            goodsResourceEntity.carModel)
+                            ? Padding(
+                          padding: EdgeInsets.only(bottom: 10),
                           child: Row(
                             children: [
                               Text(
@@ -130,7 +154,7 @@ class _CargoDetailState extends State<CargoDetail> {
                               Padding(
                                 padding: EdgeInsets.only(left: 15),
                                 child: Text(
-                                  '6-10米,平板',
+                                  '${goodsResourceEntity.getCarString()}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: ColorConfig.color33,
@@ -139,8 +163,13 @@ class _CargoDetailState extends State<CargoDetail> {
                               ),
                             ],
                           ),
-                        ),
-                        Row(
+                        )
+                            : Container(),
+                        CommonUtils.isStringEmpty(
+                            goodsResourceEntity.goodsName) ||
+                            CommonUtils.isStringEmpty(
+                                goodsResourceEntity.goodsTypeName)
+                            ? Row(
                           children: [
                             Text(
                               '货物',
@@ -152,7 +181,8 @@ class _CargoDetailState extends State<CargoDetail> {
                             Padding(
                               padding: EdgeInsets.only(left: 15),
                               child: Text(
-                                '纤维作物，10-12吨/10-12方，袋装',
+                                goodsResourceEntity
+                                    .getFormatCargoInfoString(),
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: ColorConfig.color33,
@@ -160,10 +190,12 @@ class _CargoDetailState extends State<CargoDetail> {
                               ),
                             ),
                           ],
-                        ),
+                        )
+                            : Container(),
                       ],
                     ),
-                  ),
+                  )
+                      : Container(),
 
                   // 装卸信息
                   Container(
@@ -182,16 +214,6 @@ class _CargoDetailState extends State<CargoDetail> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 10),
-                              child: Text(
-                                '一装一卸',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: ColorConfig.color99,
-                                ),
-                              ),
-                            )
                           ],
                         ),
 
@@ -207,7 +229,10 @@ class _CargoDetailState extends State<CargoDetail> {
                               Padding(
                                 padding: EdgeInsets.only(left: 6),
                                 child: Text(
-                                  '今天 下午12:00-18:00可装',
+                                  CommonUtils.showServerDateTime(
+                                    goodsResourceEntity.predictSendTimeText,
+                                    goodsResourceEntity.predictSendTimeEnd,
+                                  ),
                                   style: TextStyle(
                                     color: ColorConfig.color99,
                                     fontSize: 14,
@@ -221,8 +246,8 @@ class _CargoDetailState extends State<CargoDetail> {
                         loadInfoItem(
                           '装',
                           ColorConfig.color_FF5151,
-                          '江西省南昌市南昌县迎宾中大道',
-                          '迎宾大道江铃大厦',
+                          '${goodsResourceEntity.fromCity ?? ''}${goodsResourceEntity.fromArea ?? ''}',
+                          goodsResourceEntity.allFromCity(),
                         ),
 
                         Padding(
@@ -230,8 +255,8 @@ class _CargoDetailState extends State<CargoDetail> {
                           child: loadInfoItem(
                             '卸',
                             ColorConfig.color_4DA0FF,
-                            '江西省赣州市章贡区黄婆石',
-                            '黄婆石20号',
+                            '${goodsResourceEntity.toCity ?? ''}${goodsResourceEntity.toArea ?? ''}',
+                            goodsResourceEntity.allToCity(),
                           ),
                         ),
                       ],
@@ -239,7 +264,11 @@ class _CargoDetailState extends State<CargoDetail> {
                   ),
 
                   // 支付信息
-                  Container(
+                  goodsResourceEntity.deposit != null &&
+                      goodsResourceEntity.deposit > 0 ||
+                      goodsResourceEntity.predictPrice != null &&
+                          goodsResourceEntity.predictPrice > 0
+                      ? Container(
                     margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.all(10),
                     color: ColorConfig.colorfff,
@@ -248,15 +277,20 @@ class _CargoDetailState extends State<CargoDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '支付信息',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Text(
+                            '支付信息',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 10, bottom: 10),
+                        goodsResourceEntity.predictPrice != null &&
+                            goodsResourceEntity.predictPrice > 0
+                            ? Padding(
+                          padding: EdgeInsets.only(bottom: 10),
                           child: Row(
                             children: [
                               Container(
@@ -271,7 +305,7 @@ class _CargoDetailState extends State<CargoDetail> {
                                 width: 70,
                               ),
                               Text(
-                                '1300元/趟',
+                                '${goodsResourceEntity.predictPrice}元',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: ColorConfig.color33,
@@ -279,8 +313,11 @@ class _CargoDetailState extends State<CargoDetail> {
                               )
                             ],
                           ),
-                        ),
-                        Row(
+                        )
+                            : Container(),
+                        goodsResourceEntity.deposit != null &&
+                            goodsResourceEntity.deposit > 0
+                            ? Row(
                           children: [
                             Container(
                               child: Text(
@@ -294,21 +331,24 @@ class _CargoDetailState extends State<CargoDetail> {
                               width: 70,
                             ),
                             Text(
-                              '300元',
+                              '${goodsResourceEntity.deposit}元',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: ColorConfig.color33,
                               ),
                             )
                           ],
-                        ),
+                        )
+                            : Container(),
                       ],
                     ),
                   )
+                      : Container(),
                 ],
               ),
             ),
-            Container(
+            widget.isSend
+                ? Container(
               height: 44,
               width: double.infinity,
               child: Row(
@@ -347,7 +387,9 @@ class _CargoDetailState extends State<CargoDetail> {
                   ),
                 ],
               ),
-            ),
+            )
+                : Container(),
+            Loading(isLoading),
           ],
         ),
       ),
@@ -397,8 +439,33 @@ class _CargoDetailState extends State<CargoDetail> {
     );
   }
 
+  GoodsResourceEntity goodsResourceEntity = GoodsResourceEntity();
+
   @override
   void initState() {
     super.initState();
+    getDetail();
+  }
+
+  getDetail() async {
+    AppResponse appResponse =
+    await GoodsResourceApi.getMasterGoods(id: widget.cargoId);
+    if (!mounted) {
+      return;
+    }
+    if (!appResponse.isOk()) {
+      ToastUtils.show(msg: appResponse.msg);
+      hideLoading();
+      return;
+    }
+    goodsResourceEntity = GoodsResourceEntity().fromJson(appResponse.data);
+
+    hideLoading();
+  }
+
+  hideLoading() {
+    setState(() {
+      isLoading = false;
+    });
   }
 }

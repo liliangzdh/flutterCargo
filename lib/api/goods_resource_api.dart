@@ -64,4 +64,15 @@ class GoodsResourceApi {
       },
     );
   }
+
+  /// 获取 货源 详情
+  static Future<AppResponse> getMasterGoods({dynamic id}) {
+    return ApiManger.instance.sendRequest(
+      "goodsResource/getMasterGoodsVO",
+      "GET",
+      {
+        "id": id,
+      },
+    );
+  }
 }

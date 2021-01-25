@@ -146,7 +146,8 @@ class _SendGoodListState extends State<SendGoodList>
         ToastUtils.show(msg: '待跳转发货页面');
         break;
       case ItemAction:
-        RouteUtils.go(context, CargoDetailKeyString);
+        RouteUtils.go(context, CargoDetailKeyString,
+            params: {"cargoId": item.id, "isSend": type == 1});
         break;
       case DriverAction:
         ToastUtils.show(msg: '待指定司机');

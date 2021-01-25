@@ -79,8 +79,17 @@ goodsResourceEntityFromJson(GoodsResourceEntity data, Map<String, dynamic> json)
 	if (json['remarks'] != null) {
 		data.remarks = json['remarks']?.toString();
 	}
+	if (json['distance'] != null) {
+		data.distance = json['distance']?.toDouble();
+	}
 	if (json['isSub'] != null) {
 		data.isSub = json['isSub']?.toInt();
+	}
+	if (json['predictSendTimeText'] != null) {
+		data.predictSendTimeText = json['predictSendTimeText']?.toString();
+	}
+	if (json['predictSendTimeEnd'] != null) {
+		data.predictSendTimeEnd = json['predictSendTimeEnd']?.toString();
 	}
 	if (json['isOften'] != null) {
 		data.isOften = json['isOften']?.toInt();
@@ -116,7 +125,10 @@ Map<String, dynamic> goodsResourceEntityToJson(GoodsResourceEntity entity) {
 	data['pack'] = entity.pack;
 	data['createTime'] = entity.createTime;
 	data['remarks'] = entity.remarks;
+	data['distance'] = entity.distance;
 	data['isSub'] = entity.isSub;
+	data['predictSendTimeText'] = entity.predictSendTimeText;
+	data['predictSendTimeEnd'] = entity.predictSendTimeEnd;
 	data['isOften'] = entity.isOften;
 	return data;
 }
