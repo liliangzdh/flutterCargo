@@ -5,6 +5,7 @@
 import 'package:cargo_flutter_app/pages/cargo/cargo_detail/CargoDetail.dart';
 import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:cargo_flutter_app/pages/main/index.dart';
+import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/bill_manger.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -26,5 +27,13 @@ var cargoDetailHandler = Handler(
     String cargoId = params['cargoId']?.first ?? "0";
     var isSend = params['isSend']?.first ?? "false";
     return CargoDetail(int.parse(cargoId),isSend == 'true');
+  },
+);
+
+
+// 发票管理。
+var billMangerHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return BillManger();
   },
 );
