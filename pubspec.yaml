@@ -71,6 +71,8 @@ flutter:
     - assets/images/stay_receiving_orders.png
     - assets/images/no_data.png
     - assets/images/alarm_clock.png
+    - assets/images/starting_point.png
+    - assets/images/end_point.png
 
     - assets/images/my/bill.png
     - assets/images/my/car_manger.png

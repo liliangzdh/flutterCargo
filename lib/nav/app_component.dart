@@ -6,13 +6,12 @@
  *
  *
  */
+import 'package:cargo_flutter_app/nav/routes.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'application.dart';
-import 'routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:cargo_flutter_app/nav/application.dart';
 

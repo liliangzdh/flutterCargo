@@ -57,7 +57,8 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     return Container(
       child: Stack(
         children: [
-          !widget.params.isLoading &&
+          widget.params != null &&  widget.params.isLoading != null &&
+                  !widget.params.isLoading &&
                   listData.length == 0 &&
                   widget.emptyView != null
               ? widget.emptyView
@@ -75,13 +76,13 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
               itemCount: listData.length,
             ),
           ),
-          Loading(
-            widget.params.isLoading,
-            text: widget.params.loadingText,
-            onTap: () {
-              // 隐藏
-            },
-          )
+          // Loading(
+          //   widget.params.isLoading,
+          //   text: widget.params.loadingText,
+          //   onTap: () {
+          //     // 隐藏
+          //   },
+          // )
         ],
       ),
     );
@@ -104,7 +105,7 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     pageSize = widget.pageSize;
     pageNum = pageNum;
     if (widget.params == null) {
-      widget.params = CommonListParams(listData: List());
+      widget.params = CommonListParams(listData: List(), isLoading: true);
     }
     listData = widget.params.listData;
   }

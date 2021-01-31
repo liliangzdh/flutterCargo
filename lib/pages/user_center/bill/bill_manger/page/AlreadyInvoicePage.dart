@@ -1,3 +1,7 @@
+import 'package:cargo_flutter_app/api/invoice_api.dart';
+import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
+import 'package:cargo_flutter_app/model/invoice_info_entity.dart';
+import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/item/InvoiceItem.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,24 +16,25 @@ class AlreadyInvoicePage extends StatefulWidget {
   }
 }
 
-class _AlreadyInvoicePage extends State<AlreadyInvoicePage>  with AutomaticKeepAliveClientMixin{
-  @override
-  void initState() {
-    super.initState();
-    print("-------init State _AlreadyInvoicePage");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print("-------dispose State _AlreadyInvoicePage");
-  }
-
+class _AlreadyInvoicePage extends State<AlreadyInvoicePage>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Container(
-      color: ColorConfig.color_E6E6E6,
+      color: ColorConfig.color_f4f4f4,
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: new UnitedListView<InvoiceInfoEntity>(
+        itemBuilder: (List<InvoiceInfoEntity> list, int index) {
+          return InvoiceItem(item: list[index]);
+        },
+        pageRequest: (int pageNum, int pageSize) {
+          return InvoiceApi.endList(pageNum, pageSize);
+        },
+        fromJson: (dynamic m) {
+          return InvoiceInfoEntity().fromJson(m);
+        },
+      ),
     );
   }
 

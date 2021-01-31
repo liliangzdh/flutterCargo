@@ -1,4 +1,5 @@
 import 'package:cargo_flutter_app/components/raised_button.dart';
+import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/AlreadyInvoicePage.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/InProcessInvoicePage.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/MayInvoicePage.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
@@ -27,7 +28,7 @@ class _BillManger extends State<BillManger>
     );
 
     mController.addListener(() {
-      print("======:${mController.index}");
+      print("滚动：${mController.index}");
     });
   }
 
@@ -41,12 +42,15 @@ class _BillManger extends State<BillManger>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('发票管理'),
+        title: const Text('发票管理'),
         backgroundColor: ColorConfig.colorfff,
         elevation: 0,
         actions: [
           MyRaisedButton(
-            child: Text('开票信息'),
+            child: const Text('开票信息'),
+            onPressed: () {
+              setState(() {});
+            },
           )
         ],
       ),
@@ -72,14 +76,15 @@ class _BillManger extends State<BillManger>
               ),
             ),
             Expanded(
-                child: TabBarView(
-              controller: mController,
-              children: [
-                MayInvoicePage(),
-                InProcessInvoicePage(),
-                MayInvoicePage(),
-              ],
-            ))
+              child: TabBarView(
+                controller: mController,
+                children: [
+                  MayInvoicePage(),
+                  InProcessInvoicePage(),
+                  AlreadyInvoicePage(),
+                ],
+              ),
+            )
           ],
         ),
       ),
