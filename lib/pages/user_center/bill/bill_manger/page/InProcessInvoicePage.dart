@@ -1,7 +1,5 @@
-import 'package:cargo_flutter_app/api/goods_resource_api.dart';
 import 'package:cargo_flutter_app/api/invoice_api.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
-import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/model/invoice_info_entity.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/item/InvoiceItem.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';

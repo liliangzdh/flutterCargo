@@ -69,4 +69,6 @@ class InvoiceEntity with JsonConvert<InvoiceEntity> {
 	dynamic invoiceState;
 	double totalCharge;
 	String spUserName;
+
+	bool isSelect = false;
 }

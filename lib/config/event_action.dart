@@ -1,0 +1,2 @@
+
+const String RefreshKeyString = "refresh";

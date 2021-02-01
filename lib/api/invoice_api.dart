@@ -51,4 +51,20 @@ class InvoiceApi {
       },
     );
   }
+
+
+  /// 批量申请开票
+  static Future<AppResponse> batchInvoicingCommit({amount,idArray,spUserName,userId}) {
+    return ApiManger.instance.sendRequest(
+      "invoicing/betchInvoicingCommit",
+      "Post",
+      {
+        "amount": amount,
+        "ids": idArray,
+        "spUserName":spUserName,
+        "userId":userId,
+        "id":userId,
+      },
+    );
+  }
 }

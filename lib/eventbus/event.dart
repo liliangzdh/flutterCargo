@@ -11,9 +11,8 @@ class LoginEvent {
 
 class ListViewAction {
   String key;
-  String id;
-
-  ListViewAction(this.key, this.id);
+  String action;
+  ListViewAction(this.key, this.action);
 }
 
 // 发货界面 刷新。

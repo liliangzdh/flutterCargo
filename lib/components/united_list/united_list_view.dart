@@ -1,15 +1,17 @@
+import 'package:cargo_flutter_app/config/event_action.dart';
 import 'package:cargo_flutter_app/eventbus/event.dart';
 import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../loading.dart';
 
 typedef Future<AppResponse> PageRequest(int page, int pageSize);
 typedef Widget ItemBuilder<T>(List<T> list, int position);
 // map 转 实体类
 typedef T FromJson<T>(dynamic map);
+
+
 
 /// 通用的ListView (自带 下拉刷新。加载更多)
 // Key childKey = Key("UnitedListView");
@@ -27,6 +29,7 @@ class UnitedListView<T> extends StatefulWidget {
 
   final bool enablePullDown;
   final bool enablePullUp;
+  final String eventBusStringAction; // 定义 event-bus 接收事件参数，
 
   CommonListParams<T> params;
 
@@ -41,7 +44,8 @@ class UnitedListView<T> extends StatefulWidget {
     this.emptyView,
     this.pageSize = 10,
     this.page = 1,
-  }) : super(key: key);
+    this.eventBusStringAction,
+  }) : super(key: key) ;
 
   @override
   State<UnitedListView> createState() {
@@ -57,7 +61,8 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     return Container(
       child: Stack(
         children: [
-          widget.params != null &&  widget.params.isLoading != null &&
+          widget.params != null &&
+                  widget.params.isLoading != null &&
                   !widget.params.isLoading &&
                   listData.length == 0 &&
                   widget.emptyView != null
@@ -99,6 +104,8 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
     await getMasterPageList(false);
   }
 
+  var eventBusFn;
+
   @override
   void initState() {
     super.initState();
@@ -108,6 +115,25 @@ class _UnitedListViewState<T> extends State<UnitedListView<T>> {
       widget.params = CommonListParams(listData: List(), isLoading: true);
     }
     listData = widget.params.listData;
+
+    if (widget.eventBusStringAction != null) {
+      // 注册 event-bus
+      eventBusFn = eventBus.on<ListViewAction>().listen((event) {
+        if (event.key == widget.eventBusStringAction) {
+          switch (event.action) {
+            case RefreshKeyString: // 列表刷新操作。
+              this._onRefresh();
+              break;
+          }
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    eventBusFn?.cancel();
   }
 
   int pageSize = 10;

@@ -29,6 +29,8 @@ class ColorConfig {
   static const Color color_E6E6E6 = Color(0xFFE6E6E6);
   static const Color color_FF5151 = Color(0xFFFF5151);
   static const Color color_E8F3FE= Color(0xFFE8F3FE);
+  static const Color color_E4EEEE= Color(0xFFE4EEEE);
+  static const Color color_EEEEEE= Color(0xFFEEEEEE);
 
 
 }

@@ -9,6 +9,7 @@ class MyRaisedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
   final EdgeInsetsGeometry padding;
+  final ShapeBorder shape;
 
   MyRaisedButton({
     this.color = ColorConfig.colorfff,
@@ -18,6 +19,7 @@ class MyRaisedButton extends StatelessWidget {
     this.onPressed,
     this.child,
     this.padding = EdgeInsets.zero,
+    this.shape,
   });
 
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class MyRaisedButton extends StatelessWidget {
       highlightElevation: highlightElevation,
       padding: padding,
       child: child,
+        shape:shape,
       onPressed: () {
         if (onPressed != null) {
           onPressed();
