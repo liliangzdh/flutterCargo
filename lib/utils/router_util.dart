@@ -8,6 +8,8 @@ const String LoginKeyString = '/login';
 const String CargoDetailKeyString = '/cargoDetail';
 const String InvoiceMangerKeyString = '/InvoiceManger';
 const String InvoiceInfoEditKeyString = '/InvoiceInfoEdit';
+const String QuestionListKeyString = '/questionList';
+const String QuestionDetailKeyString = '/QuestionDetail';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。

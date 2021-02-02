@@ -11,8 +11,12 @@ import 'package:cargo_flutter_app/model/invoice_info_entity.dart';
 import 'package:cargo_flutter_app/generated/json/invoice_info_entity_helper.dart';
 import 'package:cargo_flutter_app/model/invoice_entity.dart';
 import 'package:cargo_flutter_app/generated/json/invoice_entity_helper.dart';
+import 'package:cargo_flutter_app/model/question_detail_entity.dart';
+import 'package:cargo_flutter_app/generated/json/question_detail_entity_helper.dart';
 import 'package:cargo_flutter_app/model/user_info_entity.dart';
 import 'package:cargo_flutter_app/generated/json/user_info_entity_helper.dart';
+import 'package:cargo_flutter_app/model/question_type_entity.dart';
+import 'package:cargo_flutter_app/generated/json/question_type_entity_helper.dart';
 
 class JsonConvert<T> {
 	T fromJson(Map<String, dynamic> json) {
@@ -28,10 +32,12 @@ class JsonConvert<T> {
 			return invoiceEditInfoEntityFromJson(data as InvoiceEditInfoEntity, json) as T;			case GoodsResourceEntity:
 			return goodsResourceEntityFromJson(data as GoodsResourceEntity, json) as T;			case InvoiceInfoEntity:
 			return invoiceInfoEntityFromJson(data as InvoiceInfoEntity, json) as T;			case InvoiceEntity:
-			return invoiceEntityFromJson(data as InvoiceEntity, json) as T;			case UserInfoEntity:
+			return invoiceEntityFromJson(data as InvoiceEntity, json) as T;			case QuestionDetailEntity:
+			return questionDetailEntityFromJson(data as QuestionDetailEntity, json) as T;			case UserInfoEntity:
 			return userInfoEntityFromJson(data as UserInfoEntity, json) as T;			case UserInfoOrderVo:
 			return userInfoOrderVoFromJson(data as UserInfoOrderVo, json) as T;			case UserInfoSpUserAuth:
-			return userInfoSpUserAuthFromJson(data as UserInfoSpUserAuth, json) as T;    }
+			return userInfoSpUserAuthFromJson(data as UserInfoSpUserAuth, json) as T;			case QuestionTypeEntity:
+			return questionTypeEntityFromJson(data as QuestionTypeEntity, json) as T;    }
     return data as T;
   }
 
@@ -40,10 +46,12 @@ class JsonConvert<T> {
 			return invoiceEditInfoEntityToJson(data as InvoiceEditInfoEntity);			case GoodsResourceEntity:
 			return goodsResourceEntityToJson(data as GoodsResourceEntity);			case InvoiceInfoEntity:
 			return invoiceInfoEntityToJson(data as InvoiceInfoEntity);			case InvoiceEntity:
-			return invoiceEntityToJson(data as InvoiceEntity);			case UserInfoEntity:
+			return invoiceEntityToJson(data as InvoiceEntity);			case QuestionDetailEntity:
+			return questionDetailEntityToJson(data as QuestionDetailEntity);			case UserInfoEntity:
 			return userInfoEntityToJson(data as UserInfoEntity);			case UserInfoOrderVo:
 			return userInfoOrderVoToJson(data as UserInfoOrderVo);			case UserInfoSpUserAuth:
-			return userInfoSpUserAuthToJson(data as UserInfoSpUserAuth);    }
+			return userInfoSpUserAuthToJson(data as UserInfoSpUserAuth);			case QuestionTypeEntity:
+			return questionTypeEntityToJson(data as QuestionTypeEntity);    }
     return data as T;
   }
   //Go back to a single instance by type
@@ -52,10 +60,12 @@ class JsonConvert<T> {
 			return InvoiceEditInfoEntity().fromJson(json);			case 'GoodsResourceEntity':
 			return GoodsResourceEntity().fromJson(json);			case 'InvoiceInfoEntity':
 			return InvoiceInfoEntity().fromJson(json);			case 'InvoiceEntity':
-			return InvoiceEntity().fromJson(json);			case 'UserInfoEntity':
+			return InvoiceEntity().fromJson(json);			case 'QuestionDetailEntity':
+			return QuestionDetailEntity().fromJson(json);			case 'UserInfoEntity':
 			return UserInfoEntity().fromJson(json);			case 'UserInfoOrderVo':
 			return UserInfoOrderVo().fromJson(json);			case 'UserInfoSpUserAuth':
-			return UserInfoSpUserAuth().fromJson(json);    }
+			return UserInfoSpUserAuth().fromJson(json);			case 'QuestionTypeEntity':
+			return QuestionTypeEntity().fromJson(json);    }
     return null;
   }
 
@@ -65,10 +75,12 @@ class JsonConvert<T> {
 			return List<InvoiceEditInfoEntity>();			case 'GoodsResourceEntity':
 			return List<GoodsResourceEntity>();			case 'InvoiceInfoEntity':
 			return List<InvoiceInfoEntity>();			case 'InvoiceEntity':
-			return List<InvoiceEntity>();			case 'UserInfoEntity':
+			return List<InvoiceEntity>();			case 'QuestionDetailEntity':
+			return List<QuestionDetailEntity>();			case 'UserInfoEntity':
 			return List<UserInfoEntity>();			case 'UserInfoOrderVo':
 			return List<UserInfoOrderVo>();			case 'UserInfoSpUserAuth':
-			return List<UserInfoSpUserAuth>();    }
+			return List<UserInfoSpUserAuth>();			case 'QuestionTypeEntity':
+			return List<QuestionTypeEntity>();    }
     return null;
   }
 
