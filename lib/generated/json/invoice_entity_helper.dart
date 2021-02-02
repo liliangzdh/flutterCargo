@@ -202,6 +202,9 @@ invoiceEntityFromJson(InvoiceEntity data, Map<String, dynamic> json) {
 	if (json['spUserName'] != null) {
 		data.spUserName = json['spUserName']?.toString();
 	}
+	if (json['isSelect'] != null) {
+		data.isSelect = json['isSelect'];
+	}
 	return data;
 }
 
@@ -274,5 +277,6 @@ Map<String, dynamic> invoiceEntityToJson(InvoiceEntity entity) {
 	data['invoiceState'] = entity.invoiceState;
 	data['totalCharge'] = entity.totalCharge;
 	data['spUserName'] = entity.spUserName;
+	data['isSelect'] = entity.isSelect;
 	return data;
 }

@@ -7,6 +7,7 @@ const String RootKeyString = "/";
 const String LoginKeyString = '/login';
 const String CargoDetailKeyString = '/cargoDetail';
 const String BillMangerKeyString = '/BillManger';
+const String BillInfoEditKeyString = '/BillInfoEdit';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。
@@ -35,7 +36,7 @@ class RouteUtils {
     if (params != null) {
       int index = 0;
       for (var key in params.keys) {
-        var value= params[key];
+        var value = params[key];
         if (index == 0) {
           query = "?";
         } else {
@@ -51,6 +52,10 @@ class RouteUtils {
       '$path$query',
       transition: TransitionType.material,
     );
+  }
+
+  static goBack(BuildContext context) {
+    Application.router.pop(context);
   }
 
 // static go(BuildContext context, String path) {

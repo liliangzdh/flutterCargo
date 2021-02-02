@@ -3,6 +3,7 @@ import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/Alread
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/InProcessInvoicePage.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/MayInvoicePage.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -49,7 +50,9 @@ class _BillManger extends State<BillManger>
           MyRaisedButton(
             child: const Text('开票信息'),
             onPressed: () {
-              setState(() {});
+              setState(() {
+                RouteUtils.go(context, BillInfoEditKeyString);
+              });
             },
           )
         ],
