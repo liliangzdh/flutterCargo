@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 const String RootKeyString = "/";
 const String LoginKeyString = '/login';
 const String CargoDetailKeyString = '/cargoDetail';
-const String BillMangerKeyString = '/BillManger';
-const String BillInfoEditKeyString = '/BillInfoEdit';
+const String InvoiceMangerKeyString = '/InvoiceManger';
+const String InvoiceInfoEditKeyString = '/InvoiceInfoEdit';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。

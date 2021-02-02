@@ -1,21 +1,21 @@
 import 'package:cargo_flutter_app/components/raised_button.dart';
-import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/AlreadyInvoicePage.dart';
-import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/InProcessInvoicePage.dart';
-import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/page/MayInvoicePage.dart';
+import 'package:cargo_flutter_app/pages/user_center/invoice/manger/page/AlreadyInvoicePage.dart';
+import 'package:cargo_flutter_app/pages/user_center/invoice/manger/page/InProcessInvoicePage.dart';
+import 'package:cargo_flutter_app/pages/user_center/invoice/manger/page/MayInvoicePage.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 /// 发票管理
-class BillManger extends StatefulWidget {
+class InvoiceManger extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _BillManger();
+    return _InvoiceManger();
   }
 }
 
-class _BillManger extends State<BillManger>
+class _InvoiceManger extends State<InvoiceManger>
     with SingleTickerProviderStateMixin {
   TabController mController;
   List<String> tabList = ['可开具发票', '申请中发票', '已开具发票'];
@@ -51,7 +51,7 @@ class _BillManger extends State<BillManger>
             child: const Text('开票信息'),
             onPressed: () {
               setState(() {
-                RouteUtils.go(context, BillInfoEditKeyString);
+                RouteUtils.go(context, InvoiceMangerKeyString);
               });
             },
           )

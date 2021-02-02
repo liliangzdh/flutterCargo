@@ -22,7 +22,7 @@ class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
     {'icon': 'assets/images/my/car_manger.png', 'name': '车辆管理', "url": ""},
     {'icon': 'assets/images/my/bill.png', 'name': '账单', "url": ""},
     {'icon': 'assets/images/my/data_statistics.png', 'name': '数据统计', "url": ""},
-    {'icon': 'assets/images/my/invoices_manger.png', 'name': '发票管理', "url": BillMangerKeyString},
+    {'icon': 'assets/images/my/invoices_manger.png', 'name': '发票管理', "url": InvoiceMangerKeyString},
     {
       'icon': 'assets/images/my/question_consultation.png',
       'name': '问题咨询',

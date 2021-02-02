@@ -7,12 +7,11 @@ import 'package:cargo_flutter_app/eventbus/event.dart';
 import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/model/invoice_entity.dart';
-import 'package:cargo_flutter_app/pages/user_center/bill/bill_manger/item/MayItem.dart';
+import 'package:cargo_flutter_app/pages/user_center/invoice/manger/item/MayItem.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 /// 可开具 发票 页面
 ///

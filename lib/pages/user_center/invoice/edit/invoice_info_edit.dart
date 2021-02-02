@@ -12,14 +12,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 /// 开票信息 编辑
-class BillInfoEdit extends StatefulWidget {
+class InvoiceInfoEdit extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _BillInfoEdit();
+    return _InvoiceInfoEdit();
   }
 }
 
-class _BillInfoEdit extends State<BillInfoEdit> {
+class _InvoiceInfoEdit extends State<InvoiceInfoEdit> {
   final bankController = TextEditingController();
   final bankNumController = TextEditingController();
   final companyAddressController = TextEditingController();
