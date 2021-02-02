@@ -50,9 +50,7 @@ class _InvoiceManger extends State<InvoiceManger>
           MyRaisedButton(
             child: const Text('开票信息'),
             onPressed: () {
-              setState(() {
-                RouteUtils.go(context, InvoiceMangerKeyString);
-              });
+              RouteUtils.go(context, InvoiceInfoEditKeyString);
             },
           )
         ],
