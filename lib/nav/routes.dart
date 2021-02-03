@@ -26,5 +26,8 @@ class Routes {
 
     router.define(BillListKeyString, handler: billListHandler);
     router.define(TransactionDetailKeyString, handler: transactionDetailHandler);
+
+
+    router.define(VehicleManageHandlerKeyString, handler: vehicleManageHandler);
   }
 }
