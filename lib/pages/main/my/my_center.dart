@@ -20,7 +20,11 @@ class MyCenter extends StatefulWidget {
 class _MyCenter extends State<MyCenter> with TickerProviderStateMixin {
   var listData = [
     {'icon': 'assets/images/my/car_manger.png', 'name': '车辆管理', "url": ""},
-    {'icon': 'assets/images/my/bill.png', 'name': '账单', "url": ""},
+    {
+      'icon': 'assets/images/my/bill.png',
+      'name': '账单',
+      "url": BillListKeyString
+    },
     {'icon': 'assets/images/my/data_statistics.png', 'name': '数据统计', "url": ""},
     {
       'icon': 'assets/images/my/invoices_manger.png',

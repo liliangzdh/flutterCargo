@@ -2,15 +2,19 @@
  *
  *
  */
+import 'package:cargo_flutter_app/model/bill_entity.dart';
 import 'package:cargo_flutter_app/pages/cargo/cargo_detail/CargoDetail.dart';
 import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:cargo_flutter_app/pages/main/index.dart';
+import 'package:cargo_flutter_app/pages/user_center/bill/bill_list.dart';
+import 'package:cargo_flutter_app/pages/user_center/bill/transaction_detail.dart';
 import 'package:cargo_flutter_app/pages/user_center/invoice/edit/invoice_info_edit.dart';
 import 'package:cargo_flutter_app/pages/user_center/invoice/manger/invoice_manger.dart';
 import 'package:cargo_flutter_app/pages/user_center/question/question_detail.dart';
 import 'package:cargo_flutter_app/pages/user_center/question/question_list.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as JSON;
 
 var rootHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, dynamic> params) {
@@ -57,5 +61,19 @@ var questionDetailHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     String id = params['id']?.first ?? "0";
     return QuestionDetail(int.parse(id));
+  },
+);
+
+var billListHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return BillList();
+  },
+);
+
+var transactionDetailHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    var json = params['item']?.first ?? "{}";
+    BillEntity entity = BillEntity().fromJson(JSON.jsonDecode(json));
+    return TransactionDetail(entity);
   },
 );

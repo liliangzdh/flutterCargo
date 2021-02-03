@@ -23,5 +23,8 @@ class Routes {
 
     router.define(QuestionListKeyString, handler: questionListHandler);
     router.define(QuestionDetailKeyString, handler: questionDetailHandler);
+
+    router.define(BillListKeyString, handler: billListHandler);
+    router.define(TransactionDetailKeyString, handler: transactionDetailHandler);
   }
 }

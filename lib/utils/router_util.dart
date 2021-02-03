@@ -10,6 +10,8 @@ const String InvoiceMangerKeyString = '/InvoiceManger';
 const String InvoiceInfoEditKeyString = '/InvoiceInfoEdit';
 const String QuestionListKeyString = '/questionList';
 const String QuestionDetailKeyString = '/QuestionDetail';
+const String BillListKeyString = '/BillList';
+const String TransactionDetailKeyString = '/TransactionDetail';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。
