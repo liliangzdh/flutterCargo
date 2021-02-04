@@ -3,7 +3,7 @@ import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutter_device_type/flutter_device_type.dart';
 
 class CommonUtils {
   static isIos() {
@@ -142,5 +142,19 @@ class CommonUtils {
 
   static phoneCall(String phoneNum){
     _makePhoneCall('tel:$phoneNum');
+  }
+
+
+  static isIphoneX(){
+    return Device.get().isIphoneX;
+  }
+
+  // 是否 键盘展示。
+  static bool isKeyboardShow(BuildContext context){
+    return MediaQuery.of(context).viewInsets.vertical > 0;
+  }
+
+  static hideKeyboard(BuildContext context){
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 }
