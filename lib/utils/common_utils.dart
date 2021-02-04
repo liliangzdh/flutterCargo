@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class CommonUtils {
   static isIos() {
@@ -128,5 +130,17 @@ class CommonUtils {
       print('--------ewer');
       return '';
     }
+  }
+
+  static Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('暂不支持打电话！');
+    }
+  }
+
+  static phoneCall(String phoneNum){
+    _makePhoneCall('tel:$phoneNum');
   }
 }
