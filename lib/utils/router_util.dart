@@ -13,6 +13,7 @@ const String QuestionDetailKeyString = '/QuestionDetail';
 const String BillListKeyString = '/BillList';
 const String TransactionDetailKeyString = '/TransactionDetail';
 const String VehicleManageHandlerKeyString = '/VehicleManageHandler';
+const String VehicleCenterKeyString = '/VehicleCenter';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。

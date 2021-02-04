@@ -51,7 +51,7 @@ class DriverItem extends StatelessWidget {
                   ),
                   Padding(
                     child: Text(
-                      '${entity.name}',
+                      '${entity.name ?? ""}',
                       style: TextStyle(color: ColorConfig.color_555555),
                     ),
                     padding: EdgeInsets.only(left: 5),
@@ -139,7 +139,7 @@ class DriverItem extends StatelessWidget {
                         width: 50,
                         height: 30,
                         child: MyRaisedButton(
-                          onPressed: (){
+                          onPressed: () {
                             CommonUtils.phoneCall(entity.mobile);
                           },
                           child: Image.asset(

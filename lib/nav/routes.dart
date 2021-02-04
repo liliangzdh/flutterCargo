@@ -29,5 +29,6 @@ class Routes {
 
 
     router.define(VehicleManageHandlerKeyString, handler: vehicleManageHandler);
+    router.define(VehicleCenterKeyString, handler: vehicleCenterHandler);
   }
 }

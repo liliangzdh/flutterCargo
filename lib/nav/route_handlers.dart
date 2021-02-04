@@ -8,6 +8,7 @@ import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:cargo_flutter_app/pages/main/index.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_list.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/transaction_detail.dart';
+import 'package:cargo_flutter_app/pages/user_center/garage/vehicle_center.dart';
 import 'package:cargo_flutter_app/pages/user_center/garage/vehicle_manage.dart';
 import 'package:cargo_flutter_app/pages/user_center/invoice/edit/invoice_info_edit.dart';
 import 'package:cargo_flutter_app/pages/user_center/invoice/manger/invoice_manger.dart';
@@ -79,10 +80,16 @@ var transactionDetailHandler = Handler(
   },
 );
 
-
 // 车辆管理
 var vehicleManageHandler = Handler(
   handlerFunc: (BuildContext context, Map<String, dynamic> params) {
     return VehicleManage();
+  },
+);
+
+// 车源中心
+var vehicleCenterHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return VehicleCenter();
   },
 );

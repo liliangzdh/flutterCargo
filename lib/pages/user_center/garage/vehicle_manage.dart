@@ -61,7 +61,7 @@ class _VehicleManage extends State<VehicleManage>
                 style: TextStyle(color: ColorConfig.color_4DA0FF),
               ),
               onPressed: () {
-                RouteUtils.go(context, InvoiceInfoEditKeyString);
+                RouteUtils.go(context, VehicleCenterKeyString);
               },
             ),
           )
