@@ -1,5 +1,7 @@
 import 'package:cargo_flutter_app/api/driver_car_api.dart';
 import 'package:cargo_flutter_app/api/user_relation_api.dart';
+import 'package:cargo_flutter_app/components/line.dart';
+import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
 import 'package:cargo_flutter_app/model/driver_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
@@ -31,12 +33,66 @@ class _VehicleCenter extends State<VehicleCenter> {
       body: Container(
         child: Column(
           children: [
+            Line(),
             Container(
-              color: ColorConfig.color_4DA0FF,
               height: 50,
+              color: ColorConfig.colorfff,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      child: MyRaisedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('起始地'),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                            ),
+                          ],
+                        ),
+                      ),
+                      height: 50,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: MyRaisedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('目的地'),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                            ),
+                          ],
+                        ),
+                      ),
+                      height: 50,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      child: MyRaisedButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('车长类型'),
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                            ),
+                          ],
+                        ),
+                      ),
+                      height: 50,
+                    ),
+                  ),
+                ],
+              ),
             ),
             Expanded(
               child: Container(
+                margin: EdgeInsets.only(top: 10, left: 10, right: 10),
                 child: UnitedListView(
                   itemBuilder: (List<DriverEntity> list, int index) {
                     return DriverItem(list[index]);

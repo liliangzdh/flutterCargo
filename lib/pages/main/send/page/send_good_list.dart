@@ -143,7 +143,7 @@ class _SendGoodListState extends State<SendGoodList>
         cancelGoodsAction(item);
         break;
       case AgainAction:
-        ToastUtils.show(msg: '待跳转发货页面');
+        RouteUtils.go(context, SendCargoKeyString);
         break;
       case ItemAction:
         RouteUtils.go(context, CargoDetailKeyString,

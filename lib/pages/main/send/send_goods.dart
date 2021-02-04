@@ -1,7 +1,9 @@
 import 'package:cargo_flutter_app/components/ace_tabbar_indicator.dart';
+import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/model/tab_title.dart';
 import 'package:cargo_flutter_app/pages/main/send/page/send_good_list.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,7 +14,7 @@ class SendGoods extends StatefulWidget {
   }
 }
 
-class _SendGoods extends State<SendGoods> with SingleTickerProviderStateMixin{
+class _SendGoods extends State<SendGoods> with SingleTickerProviderStateMixin {
   PageController mPageController = PageController();
   TabController mController;
 
@@ -102,43 +104,46 @@ class _SendGoods extends State<SendGoods> with SingleTickerProviderStateMixin{
     return Container(
       color: ColorConfig.baseColor,
       child: SafeArea(
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                color: ColorConfig.baseColor,
-                height: 55,
-                alignment: Alignment.center,
-                child: Container(
-                  width: 240,
-                  height: 38,
-                  child: TabBar(
-                    isScrollable: false,
-                    controller: mController,
-                    labelPadding: EdgeInsets.zero,
-                    labelColor: ColorConfig.baseColorDark,
-                    indicatorWeight: 0,
-                    indicator: ACETabBarIndicator(),
-                    unselectedLabelColor: ColorConfig.colorfff,
-                    tabs: tabList.map((item) {
-                      return Tab(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: getBox(item.id),
-                          alignment: Alignment.center,
-                          child: Text(
-                            item.title,
-                            style: TextStyle(fontSize: 16),
-                            maxLines: 1,
-                          ),
-                        ),
-                      );
-                    }).toList(),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  Container(
+                    color: ColorConfig.baseColor,
+                    height: 55,
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 240,
+                      height: 38,
+                      child: TabBar(
+                        isScrollable: false,
+                        controller: mController,
+                        labelPadding: EdgeInsets.zero,
+                        labelColor: ColorConfig.baseColorDark,
+                        indicatorWeight: 0,
+                        indicator: ACETabBarIndicator(),
+                        unselectedLabelColor: ColorConfig.colorfff,
+                        tabs: tabList.map((item) {
+                          return Tab(
+                            child: Container(
+                              width: double.infinity,
+                              decoration: getBox(item.id),
+                              alignment: Alignment.center,
+                              child: Text(
+                                item.title,
+                                style: TextStyle(fontSize: 16),
+                                maxLines: 1,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                  child: PageView(
+                  Expanded(
+                      child: PageView(
                     controller: mPageController,
                     onPageChanged: (int index) {
                       if (isPageCanChanged) {
@@ -152,8 +157,29 @@ class _SendGoods extends State<SendGoods> with SingleTickerProviderStateMixin{
                       SendGoodList(type: 3),
                     ],
                   ))
-            ],
-          ),
+                ],
+              ),
+            ),
+            Container(
+              width: 80,
+              height: 40,
+              margin: EdgeInsets.only(bottom: 40),
+              child: MyRaisedButton(
+                onPressed: (){
+                  RouteUtils.go(context, SendCargoKeyString);
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                color: ColorConfig.color_4DA0FF,
+                highlightColor: ColorConfig.color6a,
+                child: Text(
+                  '发货',
+                  style: TextStyle(color: ColorConfig.colorfff),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -17,6 +17,7 @@ class Routes {
     router.define(RootKeyString, handler: rootHandler);
     router.define(LoginKeyString, handler: loginHandler);
     router.define(CargoDetailKeyString, handler: cargoDetailHandler);
+    router.define(SendCargoKeyString, handler: sendCargoHandler);
 
     router.define(InvoiceMangerKeyString, handler: billMangerHandler);
     router.define(InvoiceInfoEditKeyString, handler: billInfoEditHandler);

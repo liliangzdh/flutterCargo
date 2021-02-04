@@ -3,7 +3,8 @@
  *
  */
 import 'package:cargo_flutter_app/model/bill_entity.dart';
-import 'package:cargo_flutter_app/pages/cargo/cargo_detail/CargoDetail.dart';
+import 'package:cargo_flutter_app/pages/cargo/CargoDetail.dart';
+import 'package:cargo_flutter_app/pages/cargo/send_cargo.dart';
 import 'package:cargo_flutter_app/pages/login/Login.dart';
 import 'package:cargo_flutter_app/pages/main/index.dart';
 import 'package:cargo_flutter_app/pages/user_center/bill/bill_list.dart';
@@ -36,6 +37,13 @@ var cargoDetailHandler = Handler(
     String cargoId = params['cargoId']?.first ?? "0";
     var isSend = params['isSend']?.first ?? "false";
     return CargoDetail(int.parse(cargoId), isSend == 'true');
+  },
+);
+
+/// 发布货源
+var sendCargoHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    return SendCargo();
   },
 );
 

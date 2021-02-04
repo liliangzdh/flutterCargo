@@ -1,6 +1,7 @@
 /// 网络请求接口 单列 模式。
 import 'package:cargo_flutter_app/model/app_response.dart';
 import 'package:cargo_flutter_app/provider/single_global_instance/appstate_bloc.dart';
+import 'package:cargo_flutter_app/utils/common_utils.dart';
 import 'package:cargo_flutter_app/utils/router_util.dart';
 import 'package:cargo_flutter_app/utils/share_perference_utils.dart';
 import 'package:dio/adapter.dart';
@@ -26,16 +27,18 @@ class ApiManger {
     );
 
     // 设置能被花瓶 抓包。
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (client) {
-      // ignore: non_constant_identifier_names
-      client.findProxy = (Uri) {
-        // 用1个开关设置是否开启代理
-        return UrlConfig.isDebug ? 'PROXY 192.168.11.69:8888' : 'DIRECT';
-        // return UrlConfig.isDebug ? 'PROXY 192.168.0.20:8888' : 'DIRECT';
-        // return UrlConfig.isDebug ? 'PROXY 192.168.2.102:8888' : 'DIRECT';
+    if(CommonUtils.isIos()){
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (client) {
+        // ignore: non_constant_identifier_names
+        client.findProxy = (Uri) {
+          // 用1个开关设置是否开启代理
+          return UrlConfig.isDebug ? 'PROXY 192.168.11.69:8888' : 'DIRECT';
+          // return UrlConfig.isDebug ? 'PROXY 192.168.0.20:8888' : 'DIRECT';
+          // return UrlConfig.isDebug ? 'PROXY 192.168.2.102:8888' : 'DIRECT';
+        };
       };
-    };
+    }
     dio.options = baseOptions;
 
 

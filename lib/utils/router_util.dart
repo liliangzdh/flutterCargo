@@ -6,14 +6,15 @@ import 'package:flutter/widgets.dart';
 const String RootKeyString = "/";
 const String LoginKeyString = '/login';
 const String CargoDetailKeyString = '/cargoDetail';
-const String InvoiceMangerKeyString = '/InvoiceManger';
-const String InvoiceInfoEditKeyString = '/InvoiceInfoEdit';
+const String SendCargoKeyString = '/sendCargoKey';
+const String InvoiceMangerKeyString = '/invoiceManger';
+const String InvoiceInfoEditKeyString = '/invoiceInfoEdit';
 const String QuestionListKeyString = '/questionList';
-const String QuestionDetailKeyString = '/QuestionDetail';
-const String BillListKeyString = '/BillList';
-const String TransactionDetailKeyString = '/TransactionDetail';
-const String VehicleManageHandlerKeyString = '/VehicleManageHandler';
-const String VehicleCenterKeyString = '/VehicleCenter';
+const String QuestionDetailKeyString = '/questionDetail';
+const String BillListKeyString = '/billList';
+const String TransactionDetailKeyString = '/transactionDetail';
+const String VehicleManageHandlerKeyString = '/vehicleManageHandler';
+const String VehicleCenterKeyString = '/vehicleCenter';
 
 class RouteUtils {
   // 避免 弹 出 多个 登录界面。
