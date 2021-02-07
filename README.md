@@ -33,3 +33,9 @@ import 'package:cargo_flutter_app/utils/toast_utils.dart';
 # PageView 可以缓存 使用 AutomaticKeepAliveClientMixin。
 
 # 父有状态组件调用 子有状态组件 方法,GlobalKey。evenBus。
+
+
+# json 文件放到 assets 里面。
+  Future<String> loadString = DefaultAssetBundle.of(context).loadString("assets/json/currency.json");
+ 
+        

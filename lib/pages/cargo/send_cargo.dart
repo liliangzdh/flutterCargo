@@ -1,4 +1,5 @@
 import 'package:cargo_flutter_app/components/line.dart';
+import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/word.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
@@ -35,7 +36,7 @@ class _SendCargo extends State<SendCargo> {
       appBar: AppBar(
         backgroundColor: ColorConfig.colorfff,
         elevation: 0,
-        title: Text('发货货源'),
+        title: Text('发布货源'),
       ),
       body: Stack(
         alignment: AlignmentDirectional.bottomEnd,
@@ -294,6 +295,9 @@ class _SendCargo extends State<SendCargo> {
       width: double.infinity,
       color: ColorConfig.color_f4f4f4,
       child: MyRaisedButton(
+        onPressed: (){
+          CommonModalUtils().showProvinceCityAreaSelect(context);
+        },
         child: Container(
           margin: EdgeInsets.only(left: 10),
           alignment: Alignment.centerLeft,

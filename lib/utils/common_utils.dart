@@ -25,6 +25,21 @@ class CommonUtils {
     return mq.size.width;
   }
 
+  static double getScreenHeight(BuildContext context) {
+    MediaQueryData mq = MediaQuery.of(context);
+    return mq.size.height;
+  }
+
+  static double getStateBarHeight(BuildContext context) {
+    MediaQueryData mq = MediaQuery.of(context);
+    return mq.padding.top;
+  }
+
+  static double getStateBottomHeight(BuildContext context) {
+    MediaQueryData mq = MediaQuery.of(context);
+    return mq.padding.bottom;
+  }
+
   /// 字符串是否为空或者 空字符串
   static isStringEmpty(String str) {
     return str == null || str.length == 0;

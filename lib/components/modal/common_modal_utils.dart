@@ -1,3 +1,4 @@
+import 'package:cargo_flutter_app/components/city/province_city_Area_select.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -95,7 +96,7 @@ class CommonModalUtils {
     );
   }
 
-  ///
+  /// 普通的 删除 弹窗
   showCommonCancelDialog(BuildContext context,
       {String title = '确定删除么', VoidCallback onPressed}) {
     showDialog(
@@ -207,6 +208,22 @@ class CommonModalUtils {
           ),
         );
       },
+    );
+  }
+
+  /// 三级城市 选择
+  showProvinceCityAreaSelect(BuildContext context) {
+    showMaterialModalBottomSheet(
+      context: context,
+      enableDrag: false,
+      backgroundColor: ColorConfig.colorfff,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(14),
+          topRight: Radius.circular(14),
+        ),
+      ),
+      builder: (context) => ProvinceCityAreaSelect(),
     );
   }
 }
