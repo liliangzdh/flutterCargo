@@ -34,6 +34,9 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
   // 选中的省，市，县。
   SelectArea selectArea = SelectArea();
 
+  // 搜索的数据
+  List<SelectArea> searchArrayList = [];
+
   @override
   void initState() {
     super.initState();
@@ -113,10 +116,12 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
   Widget build(BuildContext context) {
     var cityList = getCityListSelect();
     var areaList = getAreaListSelect();
-    print("keyboard:${CommonUtils.getKeyboardHeight(context)}");
+    var keyboardH = CommonUtils.getKeyboardHeight(context);
     return Container(
-      // margin: EdgeInsets.only(bottom: CommonUtils.getScreenHeight(context) *1/3),
-      height: CommonUtils.getScreenHeight(context) * 2 / 3 -
+      margin: EdgeInsets.only(bottom: keyboardH),
+      height: (keyboardH > 0
+              ? CommonUtils.getScreenHeight(context) * 1 / 2
+              : CommonUtils.getScreenHeight(context) * 2 / 3) -
           CommonUtils.getStateBarHeight(context) -
           CommonUtils.getStateBottomHeight(context),
       child: Column(
@@ -129,7 +134,9 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                 Container(
                   width: 50,
                   child: MyRaisedButton(
-                    onPressed: sure,
+                    onPressed: (){
+                      sure(SelectArea());
+                    },
                     padding: EdgeInsets.only(right: 10),
                     child: Text(
                       '清空',
@@ -156,7 +163,9 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                 Container(
                   width: 50,
                   child: MyRaisedButton(
-                    onPressed: sure,
+                    onPressed: (){
+                      sure(selectArea);
+                    },
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       '确定',
@@ -194,6 +203,7 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                     child: TextField(
                       maxLines: 1,
                       controller: controller,
+                      onChanged: onSearchTextChange,
                       style: TextStyle(
                         color: ColorConfig.color33,
                         fontSize: 16,
@@ -216,19 +226,105 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
           ),
           Line(),
           Expanded(
-            child: Row(
+            child: Stack(
               children: [
-                buildListViewCell(provinceList, selectArea.province,
-                    color: ColorConfig.color_f4f4f4),
-                buildListViewCell(cityList, selectArea.city),
-                VerLine(),
-                buildListViewCell(areaList, selectArea.area),
+                Container(
+                  child: Row(
+                    children: [
+                      buildListViewCell(provinceList, selectArea.province,
+                          color: ColorConfig.color_f4f4f4),
+                      buildListViewCell(cityList, selectArea.city),
+                      VerLine(),
+                      buildListViewCell(areaList, selectArea.area),
+                    ],
+                  ),
+                ),
+                searchArrayList.length > 0
+                    ? Container(
+                        color: ColorConfig.colorfff,
+                        child: MediaQuery.removePadding(
+                          context: context,
+                          removeTop: true,
+                          child: ListView.builder(
+                            itemCount: searchArrayList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              var bean = searchArrayList[index];
+                              return InkWell(
+                                onTap: () {
+                                  sure(bean);
+                                },
+                                child: Container(
+                                  height: 40,
+                                  alignment: Alignment.centerLeft,
+                                  padding: EdgeInsets.only(left: 10),
+                                  width: double.infinity,
+                                  child: Text(
+                                    '${bean.toProvinceCityAreaString()}',
+                                    style: TextStyle(
+                                      color: ColorConfig.color66,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  /// 文本搜索
+  onSearchTextChange(String str) {
+    print('-------${str}');
+    // 搜索 城市 和 县城。
+    if (str.length == 0) {
+      setState(() {
+        searchArrayList.clear();
+      });
+      return;
+    }
+    List<SelectArea> searchList = [];
+    List<SelectArea> searchAreaList = [];
+
+    for (var province in provinceList) {
+      for (var city in province.cityList) {
+        if (city.name.contains(str)) {
+          for (var area in city.areaList) {
+            searchList.add(SelectArea.createSelectArea(
+              province.name,
+              city.name,
+              area.name,
+            ));
+          }
+        } else {
+          for (var area in city.areaList) {
+            if (area.name.contains(str)) {
+              searchAreaList.add(SelectArea.createSelectArea(
+                province.name,
+                city.name,
+                area.name,
+              ));
+            }
+          }
+        }
+      }
+    }
+    // 城市的排在后面。
+    searchAreaList.addAll(searchList);
+    setState(() {
+      searchArrayList = searchAreaList;
+    });
+  }
+
+  saveSearch(){
+
   }
 
   onClick(List<dynamic> arr, index) {
@@ -248,9 +344,9 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
 
   /// 清空
   /// 确定
-  sure() {
+  sure(SelectArea area) {
     if (widget.onSelectProvinceCityAreaEndClick != null) {
-      widget.onSelectProvinceCityAreaEndClick(selectArea);
+      widget.onSelectProvinceCityAreaEndClick(area);
     }
     RouteUtils.goBack(context);
   }
