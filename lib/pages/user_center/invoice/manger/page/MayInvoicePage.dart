@@ -1,5 +1,6 @@
 import 'package:cargo_flutter_app/api/invoice_api.dart';
 import 'package:cargo_flutter_app/components/CircleSelectBtn.dart';
+import 'package:cargo_flutter_app/components/line.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/united_list/united_list_view.dart';
 import 'package:cargo_flutter_app/config/event_action.dart';
@@ -9,6 +10,7 @@ import 'package:cargo_flutter_app/model/common_list_params.dart';
 import 'package:cargo_flutter_app/model/invoice_entity.dart';
 import 'package:cargo_flutter_app/pages/user_center/invoice/manger/item/MayItem.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/utils/common_utils.dart';
 import 'package:cargo_flutter_app/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -93,8 +95,10 @@ class _MayInvoicePage extends State<MayInvoicePage>
               },
             ),
           ),
+          Line(),
           Container(
-            height: 80,
+            height: 50,
+            margin: EdgeInsets.only(bottom: CommonUtils.isIphoneX()?20:0),
             padding: EdgeInsets.only(left: 10, right: 15),
             color: ColorConfig.colorfff,
             child: Row(

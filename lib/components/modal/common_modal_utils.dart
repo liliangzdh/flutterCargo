@@ -1,6 +1,8 @@
 import 'package:cargo_flutter_app/components/city/province_city_Area_select.dart';
+import 'package:cargo_flutter_app/model/city.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
+import 'package:cargo_flutter_app/typedef/common.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -212,7 +214,9 @@ class CommonModalUtils {
   }
 
   /// 三级城市 选择
-  showProvinceCityAreaSelect(BuildContext context) {
+  showProvinceCityAreaSelect(BuildContext context,
+      SelectArea city,
+      {OnSelectProvinceCityAreaEndClick onSelectClick}) {
     showMaterialModalBottomSheet(
       context: context,
       enableDrag: false,
@@ -223,7 +227,10 @@ class CommonModalUtils {
           topRight: Radius.circular(14),
         ),
       ),
-      builder: (context) => ProvinceCityAreaSelect(),
+      builder: (context) => ProvinceCityAreaSelect(
+        initSelectArea:city,
+        onSelectProvinceCityAreaEndClick: onSelectClick,
+      ),
     );
   }
 }

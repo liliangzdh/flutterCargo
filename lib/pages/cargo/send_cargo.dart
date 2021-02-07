@@ -2,6 +2,7 @@ import 'package:cargo_flutter_app/components/line.dart';
 import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
 import 'package:cargo_flutter_app/components/word.dart';
+import 'package:cargo_flutter_app/model/city.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/common_utils.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,13 @@ class SendCargo extends StatefulWidget {
 }
 
 class _SendCargo extends State<SendCargo> {
+  SelectArea fromSelectArea = SelectArea(); // 发货地址
+  SelectArea toSelectArea = SelectArea(); // 收货地址
 
   @override
   void initState() {
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -93,7 +95,7 @@ class _SendCargo extends State<SendCargo> {
                                 Expanded(
                                   child: Column(
                                     children: [
-                                      getTopLocation('江西南昌'),
+                                      getTopLocation(fromSelectArea, 0),
                                       Line(
                                         height: 1,
                                         margin: EdgeInsets.only(
@@ -101,7 +103,8 @@ class _SendCargo extends State<SendCargo> {
                                           left: 10,
                                         ),
                                       ),
-                                      getTopLocation('南昌县象湖新城')
+                                      getTopLocation(fromSelectArea, 0,
+                                          isDetail: true)
                                     ],
                                   ),
                                 )
@@ -119,7 +122,7 @@ class _SendCargo extends State<SendCargo> {
                                 Expanded(
                                   child: Column(
                                     children: [
-                                      getTopLocation('江西省 南昌市 南昌县'),
+                                      getTopLocation(toSelectArea, 1),
                                       Line(
                                         height: 1,
                                         margin: EdgeInsets.only(
@@ -127,7 +130,8 @@ class _SendCargo extends State<SendCargo> {
                                           left: 10,
                                         ),
                                       ),
-                                      getTopLocation('江西省 南昌市 南昌县'),
+                                      getTopLocation(toSelectArea, 1,
+                                          isDetail: true),
                                     ],
                                   ),
                                 )
@@ -264,23 +268,35 @@ class _SendCargo extends State<SendCargo> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: MyRaisedButton(
-                          color: ColorConfig.colorfff,
-                          child: Text('指定司机'),
-                        ),
-                      ),
-                      Expanded(
-                        child: MyRaisedButton(
-                          color: ColorConfig.color_4DA0FF,
-                          highlightColor: ColorConfig.color60,
-                          child: Text(
-                            '确定发货',
-                            style: TextStyle(
-                              color: ColorConfig.colorfff,
+                        child: Container(
+                          height: double.infinity,
+                          child: MyRaisedButton(
+                            color: ColorConfig.colorfff,
+                            child: Text(
+                              '指定司机',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      Expanded(
+                        child: Container(
+                          height: double.infinity,
+                          child: MyRaisedButton(
+                            color: ColorConfig.color_4DA0FF,
+                            highlightColor: ColorConfig.color60,
+                            child: Text(
+                              '确定发货',
+                              style: TextStyle(
+                                color: ColorConfig.colorfff,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -289,19 +305,43 @@ class _SendCargo extends State<SendCargo> {
     );
   }
 
-  Widget getTopLocation(String city) {
+  Widget getTopLocation(SelectArea city, int type, {bool isDetail = false}) {
     return Container(
-      height: 55,
+      height: 40,
       width: double.infinity,
       color: ColorConfig.color_f4f4f4,
       child: MyRaisedButton(
-        onPressed: (){
-          CommonModalUtils().showProvinceCityAreaSelect(context);
+        onPressed: () {
+          if (isDetail) {
+            return;
+          }
+          CommonModalUtils().showProvinceCityAreaSelect(
+            context,
+            city,
+            onSelectClick: (SelectArea selectArea) {
+              setState(() {
+                switch (type) {
+                  case 0:
+                    setState(() {
+                      fromSelectArea = selectArea;
+                    });
+                    break;
+                  case 1:
+                    setState(() {
+                      toSelectArea = selectArea;
+                    });
+                    break;
+                }
+              });
+            },
+          );
         },
         child: Container(
           margin: EdgeInsets.only(left: 10),
           alignment: Alignment.centerLeft,
-          child: Text('$city'),
+          child: Text(
+            '${city.toProvinceCityAreaString()}',
+          ),
         ),
       ),
     );
@@ -351,6 +391,4 @@ class _SendCargo extends State<SendCargo> {
       ),
     );
   }
-
-
 }

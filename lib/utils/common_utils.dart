@@ -40,6 +40,14 @@ class CommonUtils {
     return mq.padding.bottom;
   }
 
+  /// 获取 键盘的 高度
+  static double getKeyboardHeight(BuildContext context) {
+    MediaQueryData mq = MediaQuery.of(context);
+    return mq.viewInsets.bottom;
+  }
+
+
+
   /// 字符串是否为空或者 空字符串
   static isStringEmpty(String str) {
     return str == null || str.length == 0;

@@ -86,7 +86,7 @@ class _InvoiceInfoEdit extends State<InvoiceInfoEdit> {
                       height: double.infinity,
                       child: SingleChildScrollView(
                         child: Container(
-                          margin: EdgeInsets.only(top: 20),
+                          margin: EdgeInsets.only(top: 20,bottom: 80),
                           padding: EdgeInsets.only(left: 10, right: 10),
                           child: Column(
                             children: [
@@ -218,7 +218,7 @@ class _InvoiceInfoEdit extends State<InvoiceInfoEdit> {
               child: Container(
                 constraints: BoxConstraints(
                   maxHeight: 80,
-                  minHeight: 50,
+                  minHeight: 40,
                 ),
                 child: TextField(
                   maxLines: keyboardType == TextInputType.number ? 1 : null,
@@ -227,6 +227,7 @@ class _InvoiceInfoEdit extends State<InvoiceInfoEdit> {
                   style: TextStyle(
                     color: ColorConfig.color33,
                     fontWeight: FontWeight.w700,
+                    fontSize: 14,
                   ),
                   decoration: InputDecoration(
                     hintText: hintText,
@@ -234,6 +235,7 @@ class _InvoiceInfoEdit extends State<InvoiceInfoEdit> {
                     hintStyle: TextStyle(
                       color: ColorConfig.color_999,
                       fontWeight: FontWeight.normal,
+                      fontSize: 14,
                     ),
                   ),
                 ),
