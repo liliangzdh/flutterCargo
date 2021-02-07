@@ -21,6 +21,9 @@ class ProvinceCityAreaSelect extends StatefulWidget {
 class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
   List<Province> provinceList = [];
 
+  // 选中的省，市，县。
+  SelectArea selectArea = SelectArea();
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +102,7 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                 Container(
                   width: 50,
                   child: MyRaisedButton(
+                    onPressed: clear,
                     padding: EdgeInsets.only(right: 10),
                     child: Text(
                       '清空',
@@ -122,6 +126,7 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                 Container(
                   width: 50,
                   child: MyRaisedButton(
+                    onPressed: sure,
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       '确定',
@@ -171,7 +176,6 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
 
         arr[index].cityList[0].isSelect = true;
         arr[index].cityList[0].areaList[0].isSelect = true;
-
       } else if (arr is List<City>) {
         for (var i = 0; i < arr.length; i++) {
           arr[i].isSelect = i == index;
@@ -189,6 +193,12 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
       }
     });
   }
+
+  /// 清空
+  clear() {}
+
+  /// 确定
+  sure() {}
 
   buildListViewCell(arr, {color: ColorConfig.colorfff}) {
     return Expanded(

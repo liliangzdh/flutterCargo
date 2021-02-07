@@ -274,7 +274,7 @@ class _SendCargo extends State<SendCargo> {
                           color: ColorConfig.color_4DA0FF,
                           highlightColor: ColorConfig.color60,
                           child: Text(
-                            '指定司机',
+                            '确定发货',
                             style: TextStyle(
                               color: ColorConfig.colorfff,
                             ),
