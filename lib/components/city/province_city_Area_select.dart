@@ -26,6 +26,8 @@ class ProvinceCityAreaSelect extends StatefulWidget {
   }
 }
 
+// 直辖市
+const DirectCity = ['北京市', '重庆市', '天津市', '上海市'];
 class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
   List<Province> provinceList = [];
 
@@ -249,6 +251,10 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                             itemCount: searchArrayList.length,
                             itemBuilder: (BuildContext context, int index) {
                               var bean = searchArrayList[index];
+                              var str = bean.toProvinceCityAreaString();
+                              if(DirectCity.contains(bean.province)){
+                                str = '${bean.province ?? ''}  ${bean.area ?? ""}';
+                              }
                               return InkWell(
                                 onTap: () {
                                   sure(bean);
@@ -259,7 +265,7 @@ class _ProvinceCityAreaSelect extends State<ProvinceCityAreaSelect> {
                                   padding: EdgeInsets.only(left: 10),
                                   width: double.infinity,
                                   child: Text(
-                                    '${bean.toProvinceCityAreaString()}',
+                                    '${str}',
                                     style: TextStyle(
                                       color: ColorConfig.color66,
                                       fontSize: 14,

@@ -31,6 +31,11 @@ class _SendCargo extends State<SendCargo> {
     super.dispose();
   }
 
+  // 装货时间选择
+  showSelectTime(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,6 +158,7 @@ class _SendCargo extends State<SendCargo> {
                             Radius.circular(5.0),
                           ),
                         ),
+                        onPressed: showSelectTime,
                         child: Row(
                           children: [
                             Text('装货时间'),
