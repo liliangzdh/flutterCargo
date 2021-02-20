@@ -76,6 +76,14 @@ class CommonUtils {
     return DateFormat('yyyy年MM月dd日').format(endTime);
   }
 
+  static String formatCDate2(DateTime endTime) {
+    if (DateTime.now().year == endTime.year) {
+      return DateFormat('MM月dd日').format(endTime);
+    }
+
+    return DateFormat('yyyy年MM月dd日').format(endTime);
+  }
+
   /// 筛选时间
   ///      * APP展示服务器返回的发货时间
   ///      * 0  精确的时间

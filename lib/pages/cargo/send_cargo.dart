@@ -1,3 +1,4 @@
+
 import 'package:cargo_flutter_app/components/line.dart';
 import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
@@ -5,8 +6,10 @@ import 'package:cargo_flutter_app/components/word.dart';
 import 'package:cargo_flutter_app/model/city.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/common_utils.dart';
+import 'package:cargo_flutter_app/utils/picker_time_data_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 
 /// 发布货源
 class SendCargo extends StatefulWidget {
@@ -33,7 +36,21 @@ class _SendCargo extends State<SendCargo> {
 
   // 装货时间选择
   showSelectTime(){
-
+    Picker picker = new Picker(
+        adapter: PickerDataAdapter<String>(pickerdata: PickerTimeDataUtils.getPickTimeDataResources()),
+        changeToFirst: true,
+        textAlign: TextAlign.left,
+        height: 250,
+        itemExtent:40,
+        cancelText: '取消',
+        confirmText: '确定',
+        columnPadding: const EdgeInsets.all(10.0),
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }
+    );
+    picker.showModal(context);
   }
 
   @override
