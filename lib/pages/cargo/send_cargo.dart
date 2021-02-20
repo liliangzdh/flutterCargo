@@ -34,7 +34,31 @@ class _SendCargo extends State<SendCargo> {
     super.dispose();
   }
 
-  // 装货时间选择
+  /// 城市选择 
+  void showProvinceCityAreaSelect(SelectArea city, int type) {
+    CommonModalUtils().showProvinceCityAreaSelect(
+      context,
+      city,
+      onSelectClick: (SelectArea selectArea) {
+        setState(() {
+          switch (type) {
+            case 0:
+              setState(() {
+                fromSelectArea = selectArea;
+              });
+              break;
+            case 1:
+              setState(() {
+                toSelectArea = selectArea;
+              });
+              break;
+          }
+        });
+      },
+    );
+  }
+
+  /// 装货时间选择
   showSelectTime(){
     Picker picker = new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: PickerTimeDataUtils.getPickTimeDataResources()),
@@ -44,6 +68,7 @@ class _SendCargo extends State<SendCargo> {
         itemExtent:40,
         cancelText: '取消',
         confirmText: '确定',
+        title: Text('装货时间'),
         columnPadding: const EdgeInsets.all(10.0),
         onConfirm: (Picker picker, List value) {
           print(value.toString());
@@ -52,6 +77,14 @@ class _SendCargo extends State<SendCargo> {
     );
     picker.showModal(context);
   }
+
+  /// 货物信息弹窗
+  showSelectGoodsInfo(){
+    print("----#===");
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +130,7 @@ class _SendCargo extends State<SendCargo> {
                             ],
                           ),
                         ),
-                        width: 100,
+                        width: 120,
                       ),
                     ),
                     //装货地址信息
@@ -209,11 +242,11 @@ class _SendCargo extends State<SendCargo> {
                     ),
 
                     // 完善货物信息
-                    getCarInfo('货物信息', 'asadadadadaddadad'),
+                    getCarInfo('货物信息', 'asadadadadaddadad',showSelectGoodsInfo),
                     Line(),
-                    getCarInfo('车型车长', '121212112'),
+                    getCarInfo('车型车长', '121212112',showSelectGoodsInfo),
                     Line(),
-                    getCarInfo('服务要求和备注', '12121'),
+                    getCarInfo('服务要求和备注', '12121',showSelectGoodsInfo),
 
                     // 定金 和 钱
                     Container(
@@ -338,26 +371,7 @@ class _SendCargo extends State<SendCargo> {
           if (isDetail) {
             return;
           }
-          CommonModalUtils().showProvinceCityAreaSelect(
-            context,
-            city,
-            onSelectClick: (SelectArea selectArea) {
-              setState(() {
-                switch (type) {
-                  case 0:
-                    setState(() {
-                      fromSelectArea = selectArea;
-                    });
-                    break;
-                  case 1:
-                    setState(() {
-                      toSelectArea = selectArea;
-                    });
-                    break;
-                }
-              });
-            },
-          );
+          showProvinceCityAreaSelect(city, type);
         },
         child: Container(
           margin: EdgeInsets.only(left: 10),
@@ -370,10 +384,13 @@ class _SendCargo extends State<SendCargo> {
     );
   }
 
-  Widget getCarInfo(String title, String content) {
+
+
+  Widget getCarInfo(String title, String content, Function showSelectGoodsInfo) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: MyRaisedButton(
+        onPressed: showSelectGoodsInfo,
         padding: EdgeInsets.only(left: 10, right: 10, bottom: 14, top: 14),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
