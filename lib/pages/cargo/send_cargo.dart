@@ -93,6 +93,7 @@ class _SendCargo extends State<SendCargo> {
   /// 货物信息弹窗
   showSelectGoodsInfo() {
     print("----#===");
+    CommonModalUtils().showSelectGoodsInfo(context);
   }
 
 

@@ -1,4 +1,5 @@
 import 'package:cargo_flutter_app/components/city/province_city_Area_select.dart';
+import 'package:cargo_flutter_app/components/goods/goods_info_select.dart';
 import 'package:cargo_flutter_app/model/city.dart';
 import 'package:cargo_flutter_app/model/goods_resource_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
@@ -234,5 +235,19 @@ class CommonModalUtils {
     );
   }
 
-  /// 时间选择
+  /// 货物 信息 选择
+  showSelectGoodsInfo(BuildContext context,){
+    showMaterialModalBottomSheet(
+      context: context,
+      enableDrag: false,
+      backgroundColor: ColorConfig.colorfff,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(14),
+          topRight: Radius.circular(14),
+        ),
+      ),
+      builder: (context) => GoodsInfoSelect(),
+    );
+  }
 }
