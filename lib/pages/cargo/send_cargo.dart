@@ -1,4 +1,3 @@
-
 import 'package:cargo_flutter_app/components/line.dart';
 import 'package:cargo_flutter_app/components/modal/common_modal_utils.dart';
 import 'package:cargo_flutter_app/components/raised_button.dart';
@@ -22,6 +21,11 @@ class SendCargo extends StatefulWidget {
 class _SendCargo extends State<SendCargo> {
   SelectArea fromSelectArea = SelectArea(); // 发货地址
   SelectArea toSelectArea = SelectArea(); // 收货地址
+
+  String predictSendTimeEndShow = ''; // 装货时间 显示。
+
+  String predictSendTimeEnd = ''; // 发送 给 后台的时间。
+  int predictSendTimeText; // 发送给 后台的时间类型。
 
   @override
   void initState() {
@@ -59,31 +63,37 @@ class _SendCargo extends State<SendCargo> {
   }
 
   /// 装货时间选择
-  showSelectTime(){
+  showSelectTime() {
     Picker picker = new Picker(
-        adapter: PickerDataAdapter<String>(pickerdata: PickerTimeDataUtils.getPickTimeDataResources()),
+        adapter: PickerDataAdapter<String>(
+            pickerdata: PickerTimeDataUtils.getPickTimeDataResources()),
         changeToFirst: true,
         textAlign: TextAlign.left,
         height: 250,
-        itemExtent:40,
+        itemExtent: 40,
         cancelText: '取消',
         confirmText: '确定',
         title: Text('装货时间'),
         columnPadding: const EdgeInsets.all(10.0),
         onConfirm: (Picker picker, List value) {
-          print(value.toString());
-          print(picker.getSelectedValues());
+          List<String> timeArr = picker.getSelectedValues();
+
+          // 向后端发送的数据。
+          predictSendTimeEnd = PickerTimeDataUtils.sendDateTime(timeArr);
+          predictSendTimeText = PickerTimeDataUtils.saveSendTimeText(timeArr);
+
+          setState(() {
+            predictSendTimeEndShow = PickerTimeDataUtils.showPickerDateTime(timeArr);
+          });
         }
     );
     picker.showModal(context);
   }
 
   /// 货物信息弹窗
-  showSelectGoodsInfo(){
+  showSelectGoodsInfo() {
     print("----#===");
   }
-
-
 
 
   @override
@@ -216,13 +226,18 @@ class _SendCargo extends State<SendCargo> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text('06月10日 下午15：00'),
+                                  Text('${predictSendTimeEndShow.length > 0
+                                      ? predictSendTimeEndShow
+                                      : '必填，装货时间'}', style: TextStyle(
+                                      color: predictSendTimeEndShow.length > 0
+                                          ? ColorConfig.color00
+                                          : ColorConfig.color_909090),),
                                   Padding(
                                     padding: EdgeInsets.only(left: 16),
                                     child: Icon(
                                       Icons.arrow_forward_ios,
                                       size: 16,
-                                      color: ColorConfig.color_ccc,
+                                      color:ColorConfig.color_ccc,
                                     ),
                                   ),
                                 ],
@@ -242,11 +257,12 @@ class _SendCargo extends State<SendCargo> {
                     ),
 
                     // 完善货物信息
-                    getCarInfo('货物信息', 'asadadadadaddadad',showSelectGoodsInfo),
+                    getCarInfo(
+                        '货物信息', 'asadadadadaddadad', showSelectGoodsInfo),
                     Line(),
-                    getCarInfo('车型车长', '121212112',showSelectGoodsInfo),
+                    getCarInfo('车型车长', '121212112', showSelectGoodsInfo),
                     Line(),
-                    getCarInfo('服务要求和备注', '12121',showSelectGoodsInfo),
+                    getCarInfo('服务要求和备注', '12121', showSelectGoodsInfo),
 
                     // 定金 和 钱
                     Container(
@@ -318,44 +334,44 @@ class _SendCargo extends State<SendCargo> {
           CommonUtils.isKeyboardShow(context)
               ? Container()
               : Container(
-                  height: 44,
-                  margin:
-                      EdgeInsets.only(bottom: CommonUtils.isIphoneX() ? 20 : 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: double.infinity,
-                          child: MyRaisedButton(
-                            color: ColorConfig.colorfff,
-                            child: Text(
-                              '指定司机',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
+            height: 44,
+            margin:
+            EdgeInsets.only(bottom: CommonUtils.isIphoneX() ? 20 : 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: double.infinity,
+                    child: MyRaisedButton(
+                      color: ColorConfig.colorfff,
+                      child: Text(
+                        '指定司机',
+                        style: TextStyle(
+                          fontSize: 15,
                         ),
                       ),
-                      Expanded(
-                        child: Container(
-                          height: double.infinity,
-                          child: MyRaisedButton(
-                            color: ColorConfig.color_4DA0FF,
-                            highlightColor: ColorConfig.color60,
-                            child: Text(
-                              '确定发货',
-                              style: TextStyle(
-                                color: ColorConfig.colorfff,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
+                Expanded(
+                  child: Container(
+                    height: double.infinity,
+                    child: MyRaisedButton(
+                      color: ColorConfig.color_4DA0FF,
+                      highlightColor: ColorConfig.color60,
+                      child: Text(
+                        '确定发货',
+                        style: TextStyle(
+                          color: ColorConfig.colorfff,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -385,8 +401,8 @@ class _SendCargo extends State<SendCargo> {
   }
 
 
-
-  Widget getCarInfo(String title, String content, Function showSelectGoodsInfo) {
+  Widget getCarInfo(String title, String content,
+      Function showSelectGoodsInfo) {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       child: MyRaisedButton(
@@ -411,9 +427,9 @@ class _SendCargo extends State<SendCargo> {
                   children: [
                     Expanded(
                         child: Text(
-                      '$content',
-                      style: TextStyle(height: 1.6),
-                    )),
+                          '$content',
+                          style: TextStyle(height: 1.6),
+                        )),
                     Padding(
                       child: Icon(
                         Icons.arrow_forward_ios,

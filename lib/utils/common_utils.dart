@@ -84,6 +84,18 @@ class CommonUtils {
     return DateFormat('yyyy年MM月dd日').format(endTime);
   }
 
+  static String formatCDate3(DateTime endTime) {
+    return DateFormat('yyyy-MM-dd').format(endTime);
+  }
+
+  /**
+   * yyyy年MM月dd日 替换 成 yyyy-MM-dd
+   */
+  static String formatCDateByString(String time) {
+    DateTime endTime = DateFormat('yyyy年MM月dd日').parse(time);
+    return DateFormat('yyyy-MM-dd').format(endTime);
+  }
+
   /// 筛选时间
   ///      * APP展示服务器返回的发货时间
   ///      * 0  精确的时间
