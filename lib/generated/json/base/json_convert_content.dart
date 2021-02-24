@@ -9,6 +9,8 @@ import 'package:cargo_flutter_app/model/invoice_entity.dart';
 import 'package:cargo_flutter_app/generated/json/invoice_entity_helper.dart';
 import 'package:cargo_flutter_app/model/question_type_entity.dart';
 import 'package:cargo_flutter_app/generated/json/question_type_entity_helper.dart';
+import 'package:cargo_flutter_app/model/goods_type_entity.dart';
+import 'package:cargo_flutter_app/generated/json/goods_type_entity_helper.dart';
 import 'package:cargo_flutter_app/model/question_detail_entity.dart';
 import 'package:cargo_flutter_app/generated/json/question_detail_entity_helper.dart';
 import 'package:cargo_flutter_app/model/user_info_entity.dart';
@@ -35,7 +37,8 @@ class JsonConvert<T> {
     switch (type) {			case BillEntity:
 			return billEntityFromJson(data as BillEntity, json) as T;			case InvoiceEntity:
 			return invoiceEntityFromJson(data as InvoiceEntity, json) as T;			case QuestionTypeEntity:
-			return questionTypeEntityFromJson(data as QuestionTypeEntity, json) as T;			case QuestionDetailEntity:
+			return questionTypeEntityFromJson(data as QuestionTypeEntity, json) as T;			case GoodsTypeEntity:
+			return goodsTypeEntityFromJson(data as GoodsTypeEntity, json) as T;			case QuestionDetailEntity:
 			return questionDetailEntityFromJson(data as QuestionDetailEntity, json) as T;			case UserInfoEntity:
 			return userInfoEntityFromJson(data as UserInfoEntity, json) as T;			case UserInfoOrderVo:
 			return userInfoOrderVoFromJson(data as UserInfoOrderVo, json) as T;			case UserInfoSpUserAuth:
@@ -51,7 +54,8 @@ class JsonConvert<T> {
 		switch (type) {			case BillEntity:
 			return billEntityToJson(data as BillEntity);			case InvoiceEntity:
 			return invoiceEntityToJson(data as InvoiceEntity);			case QuestionTypeEntity:
-			return questionTypeEntityToJson(data as QuestionTypeEntity);			case QuestionDetailEntity:
+			return questionTypeEntityToJson(data as QuestionTypeEntity);			case GoodsTypeEntity:
+			return goodsTypeEntityToJson(data as GoodsTypeEntity);			case QuestionDetailEntity:
 			return questionDetailEntityToJson(data as QuestionDetailEntity);			case UserInfoEntity:
 			return userInfoEntityToJson(data as UserInfoEntity);			case UserInfoOrderVo:
 			return userInfoOrderVoToJson(data as UserInfoOrderVo);			case UserInfoSpUserAuth:
@@ -67,7 +71,8 @@ class JsonConvert<T> {
     switch (type) {			case 'BillEntity':
 			return BillEntity().fromJson(json);			case 'InvoiceEntity':
 			return InvoiceEntity().fromJson(json);			case 'QuestionTypeEntity':
-			return QuestionTypeEntity().fromJson(json);			case 'QuestionDetailEntity':
+			return QuestionTypeEntity().fromJson(json);			case 'GoodsTypeEntity':
+			return GoodsTypeEntity().fromJson(json);			case 'QuestionDetailEntity':
 			return QuestionDetailEntity().fromJson(json);			case 'UserInfoEntity':
 			return UserInfoEntity().fromJson(json);			case 'UserInfoOrderVo':
 			return UserInfoOrderVo().fromJson(json);			case 'UserInfoSpUserAuth':
@@ -84,7 +89,8 @@ class JsonConvert<T> {
     switch (type) {			case 'BillEntity':
 			return List<BillEntity>();			case 'InvoiceEntity':
 			return List<InvoiceEntity>();			case 'QuestionTypeEntity':
-			return List<QuestionTypeEntity>();			case 'QuestionDetailEntity':
+			return List<QuestionTypeEntity>();			case 'GoodsTypeEntity':
+			return List<GoodsTypeEntity>();			case 'QuestionDetailEntity':
 			return List<QuestionDetailEntity>();			case 'UserInfoEntity':
 			return List<UserInfoEntity>();			case 'UserInfoOrderVo':
 			return List<UserInfoOrderVo>();			case 'UserInfoSpUserAuth':

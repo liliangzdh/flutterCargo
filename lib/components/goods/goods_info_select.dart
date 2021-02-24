@@ -1,7 +1,10 @@
+import 'package:cargo_flutter_app/api/goods_type_api.dart';
+import 'package:cargo_flutter_app/model/app_response.dart';
+import 'package:cargo_flutter_app/model/goods_type_entity.dart';
 import 'package:cargo_flutter_app/theme/colors.dart';
 import 'package:cargo_flutter_app/utils/common_utils.dart';
+import 'package:cargo_flutter_app/utils/share_perference_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../line.dart';
 import '../raised_button.dart';
@@ -17,6 +20,36 @@ class GoodsInfoSelect extends StatefulWidget {
 
 class _GoodsInfoSelect extends State<GoodsInfoSelect> {
   TextEditingController controller = TextEditingController();
+
+  List<GoodsTypeEntity> goodsTypeList = [];
+  List<GoodsTypeEntity> hisGoodTypeList = [];
+  List<GoodsTypeEntity> searchGoodTypeList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getHotGoodsTypeList();
+  }
+
+  getHotGoodsTypeList() async {
+    // 获取 历史
+    List<GoodsTypeEntity> hisGoodTypeListData =
+        await SharePreferenceUtils.getHistoryGoodInfoList();
+    setState(() {
+      hisGoodTypeList = hisGoodTypeListData;
+    });
+    AppResponse response = await GoodsTypeApi.getHotGoodsTypeList();
+    if (response.isOk()) {
+      setState(() {
+        goodsTypeList = response.data
+            .map<GoodsTypeEntity>((e) => GoodsTypeEntity().fromJson(e))
+            .toList();
+
+        //  手动保存两个。
+        // SharePreferenceUtils.saveHistoryGoodInfoList([goodsTypeList[0],goodsTypeList[1]]);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +109,17 @@ class _GoodsInfoSelect extends State<GoodsInfoSelect> {
           ),
           Line(),
 
+          Expanded(child:  buildNormal())
+        ],
+      ),
+    );
+  }
+
+  /// 进来显示 的 默认
+  Widget buildNormal() {
+    return Container(
+      child: Column(
+        children: [
           // 搜索
           Container(
             height: 40,
@@ -115,7 +159,93 @@ class _GoodsInfoSelect extends State<GoodsInfoSelect> {
               ],
             ),
           ),
+          Expanded(child: buildSearch(),),
+        ],
+      ),
+    );
+  }
 
+  Widget buildSearch() {
+    if (searchGoodTypeList.length > 0) {
+      return Container(
+        child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              var item = searchGoodTypeList[index];
+              return Container(
+                margin: EdgeInsets.only(left: 10,right: 10),
+                padding: EdgeInsets.only(top: 10,bottom: 10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: ColorConfig.color_ccc,
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      '${item.name}',
+                      style: TextStyle(color: ColorConfig.color00),
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "${item.parentName}",
+                          style: TextStyle(
+                            color: ColorConfig.color00,
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            },
+            itemCount: searchGoodTypeList.length,
+          ),
+        ),
+      );
+    }
+    return Container(
+      child: Column(
+        children: [
+          // 历史类型 标题
+          Container(
+            height: 30,
+            margin: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Text(
+                  '历史搜索',
+                  style: TextStyle(
+                    color: ColorConfig.color00,
+                    fontSize: 16,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.delete_forever,
+                          size: 20,
+                          color: ColorConfig.color_999,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          // 历史标签。流式布局
+          buildWrapList(hisGoodTypeList),
           // 热门类型 标题
           Container(
             height: 30,
@@ -130,32 +260,84 @@ class _GoodsInfoSelect extends State<GoodsInfoSelect> {
                   ),
                 ),
                 Expanded(
-                    child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        '更多',
-                        style: TextStyle(
-                          color: ColorConfig.color_999,
-                          fontSize: 14,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          '更多',
+                          style: TextStyle(
+                            color: ColorConfig.color_999,
+                            fontSize: 14,
+                          ),
                         ),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 20,
-                        color: ColorConfig.color_999,
-                      ),
-                    ],
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          size: 20,
+                          color: ColorConfig.color_999,
+                        ),
+                      ],
+                    ),
                   ),
-                ))
+                )
               ],
             ),
           ),
+          // 热门标签。流式布局
+          buildWrapList(goodsTypeList),
         ],
       ),
     );
   }
 
-  onSearchTextChange(String str) {}
+  Widget buildWrapList(list) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      alignment: WrapAlignment.start,
+      runAlignment: WrapAlignment.start,
+      crossAxisAlignment: WrapCrossAlignment.start,
+      textDirection: TextDirection.ltr,
+      children: list
+          .map<Widget>(
+            (e) => Container(
+              child: Text('${e.name}'),
+              decoration: BoxDecoration(
+                color: ColorConfig.color_f7f7f7,
+                borderRadius: BorderRadius.circular(2),
+              ),
+              padding: EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 10,
+                bottom: 10,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  onSearchTextChange(String str) async {
+    if (str.length == 0) {
+      setState(() {
+        searchGoodTypeList = [];
+      });
+      return;
+    }
+    AppResponse res = await GoodsTypeApi.searchGoodTypeList(key: str);
+    setState(() {
+      if (res.isOk()) {
+        List<GoodsTypeEntity> arr = [];
+        for (var map in res.data) {
+          arr.addAll(map['childList']
+              .map<GoodsTypeEntity>((e) => GoodsTypeEntity().fromJson(e))
+              .toList());
+        }
+        searchGoodTypeList = arr;
+      } else {
+        searchGoodTypeList = [];
+      }
+    });
+  }
 }
